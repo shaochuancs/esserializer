@@ -10,6 +10,15 @@ class A extends SuperA {
   constructor(options) {
     super({xVal: 42});
     Object.assign(this.options, options);
+    this._height = null;
+  }
+
+  get height() {
+    return this._height+1;
+  }
+
+  set height(h) {
+    this._height = h - 10;
   }
 
   getOptions() {
