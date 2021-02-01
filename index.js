@@ -52,7 +52,17 @@ function getProtoFromClassObj(classObj, classMapping) {
     if (p === 'constructor') {
       continue;
     }
-    __proto__Obj[p] = classObj.prototype[p];
+    let pd = Object.getOwnPropertyDescriptor(classObj.prototype, p);
+    if (pd.value) {
+      __proto__Obj[p] = classObj.prototype[p];
+      continue;
+    }
+    if (pd.get || pd.set) {
+      Object.defineProperty(__proto__Obj, p, {
+        get: pd.get,
+        set: pd.set
+      });
+    }
   }
   return __proto__Obj;
 }
