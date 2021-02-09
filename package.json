@@ -1,10 +1,11 @@
 {
   "name": "esserializer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ECMAScript serialization and deserialization utility",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/shaochuancs/esserializer/issues"
   },
-  "homepage": "https://github.com/shaochuancs/esserializer#readme"
+  "homepage": "https://github.com/shaochuancs/esserializer#readme",
+  "devDependencies": {
+    "ts-loader": "^8.0.16",
+    "typescript": "^4.1.3",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
+  }
 }
