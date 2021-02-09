@@ -39,4 +39,4 @@ Please check the `/demo` directory in source code for full example.
 ## License
 (The MIT License)
 
-Copyright (c) 2016 Chuan Shao &lt;shaochuancs@gmail.com&gt;
+Copyright (c) 2019-2021 Chuan Shao &lt;shaochuancs@gmail.com&gt;
