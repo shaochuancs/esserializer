@@ -4,7 +4,7 @@
 
 'use strict';
 
-const ESSerializer = require('../index');
+const ESSerializer = require('../dist/bundle');
 
 const SuperA = require('./SuperA');
 const A = require('./A');
