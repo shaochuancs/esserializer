@@ -35,6 +35,11 @@ class ESSerializer {
     return serializedObj;
   }
 
+  /**
+   *
+   * @param classes It's an array of Class definition. "any" is used in code only
+   * because there is no TypeScript type definition for Class.
+   */
   private static getClassMappingFromClassArray(classes:Array<any> = []): object {
     const classMapping:object = {};
     classes.forEach((c) => {
@@ -127,7 +132,8 @@ class ESSerializer {
 
   /**
    * @param serializedText
-   * @param classes [ExampleClassA, ExampleClassB, ...]
+   * @param classes [ExampleClassA, ExampleClassB, ...] It's an array of Class definition. "any" is used in code only
+   * because there is no TypeScript type definition for Class.
    */
   public static deserialize(serializedText:string, classes?:Array<any>): any {
     return ESSerializer.deserializeFromParsedObj(JSON.parse(serializedText), ESSerializer.getClassMappingFromClassArray(classes));
