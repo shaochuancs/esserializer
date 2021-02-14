@@ -22,7 +22,7 @@ class ESSerializer {
     }
 
     const serializedObj = {};
-    for (let k in target) {
+    for (const k in target) {
       // @ts-ignore
       serializedObj[k] = ESSerializer.getSerializeValueWithClassName(target[k]);
     }
@@ -65,11 +65,11 @@ class ESSerializer {
       deserializedObj.__proto__ = ESSerializer.getProtoFromClassObj(classMapping[classNameInParsedObj], classMapping);
     }
 
-    for (let k in parsedObj) {
+    for (const k in parsedObj) {
       if (k === ESSerializer.CLASS_NAME_FIELD) {
         continue;
       }
-      let v = parsedObj[k];
+      const v = parsedObj[k];
 
       if (Array.isArray(v)) {
         // @ts-ignore
@@ -95,7 +95,7 @@ class ESSerializer {
     }
 
     const prototypePropertyNames = Object.getOwnPropertyNames(classObj.prototype);
-    for (let i in prototypePropertyNames) {
+    for (const i in prototypePropertyNames) {
       const propertyName = prototypePropertyNames[i];
       if (propertyName === 'constructor') {
         continue;
