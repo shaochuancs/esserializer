@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/shaochuancs/esserializer.svg?style=shield)]
+
 # esserializer
 ESSerializer is an ECMAScript serialization and deserialization utility
 
