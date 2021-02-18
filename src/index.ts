@@ -22,7 +22,7 @@ class ESSerializer {
     }
 
     const serializedObj = {};
-    for (let k in target) {
+    for (const k in target) {
       // @ts-ignore
       serializedObj[k] = ESSerializer.getSerializeValueWithClassName(target[k]);
     }
@@ -35,6 +35,11 @@ class ESSerializer {
     return serializedObj;
   }
 
+  /**
+   *
+   * @param classes It's an array of Class definition. "any" is used in code only
+   * because there is no TypeScript type definition for Class.
+   */
   private static getClassMappingFromClassArray(classes:Array<any> = []): object {
     const classMapping:object = {};
     classes.forEach((c) => {
@@ -60,11 +65,11 @@ class ESSerializer {
       deserializedObj.__proto__ = ESSerializer.getProtoFromClassObj(classMapping[classNameInParsedObj], classMapping);
     }
 
-    for (let k in parsedObj) {
+    for (const k in parsedObj) {
       if (k === ESSerializer.CLASS_NAME_FIELD) {
         continue;
       }
-      let v = parsedObj[k];
+      const v = parsedObj[k];
 
       if (Array.isArray(v)) {
         // @ts-ignore
@@ -90,7 +95,7 @@ class ESSerializer {
     }
 
     const prototypePropertyNames = Object.getOwnPropertyNames(classObj.prototype);
-    for (let i in prototypePropertyNames) {
+    for (const i in prototypePropertyNames) {
       const propertyName = prototypePropertyNames[i];
       if (propertyName === 'constructor') {
         continue;
@@ -127,7 +132,8 @@ class ESSerializer {
 
   /**
    * @param serializedText
-   * @param classes [ExampleClassA, ExampleClassB, ...]
+   * @param classes [ExampleClassA, ExampleClassB, ...] It's an array of Class definition. "any" is used in code only
+   * because there is no TypeScript type definition for Class.
    */
   public static deserialize(serializedText:string, classes?:Array<any>): any {
     return ESSerializer.deserializeFromParsedObj(JSON.parse(serializedText), ESSerializer.getClassMappingFromClassArray(classes));
