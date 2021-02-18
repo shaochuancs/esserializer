@@ -3,9 +3,10 @@ jobs:
   build:
     docker:
       - image: 'cimg/node:current'
-    working_directory: ~/repo
     steps:
-      - run: npm run build
+      - checkout
+      - run:
+          command: npm run build
 orbs:
   node: circleci/node@3.0.0
 workflows:
