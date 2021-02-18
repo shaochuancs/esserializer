@@ -1,7 +1,14 @@
 version: 2.1
+jobs:
+  build:
+    docker:
+      - image: 'cimg/node:current'
+    steps:
+      - run: npm run build
 orbs:
   node: circleci/node@3.0.0
 workflows:
   node-tests:
     jobs:
       - node/test
+      - build
