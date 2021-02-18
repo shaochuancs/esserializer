@@ -1,7 +1,7 @@
 ![CircleCI](https://circleci.com/gh/shaochuancs/esserializer.svg?style=shield)
 
 # esserializer
-ESSerializer is an ECMAScript serialization and deserialization utility
+ESSerializer is an ECMAScript serialization and deserialization utility.
 
 With ESSerializer, you can serialize JavaScript class instance, and later on deserialize it into an instance object, with all Class/Property/Method etc. retained.
 
