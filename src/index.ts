@@ -4,14 +4,13 @@
 
 'use strict';
 
+const utils = require('./lib/utils');
+
 class ESSerializer {
   private static CLASS_NAME_FIELD = 'className';
 
-  private static notObject(target:any): boolean {
-    return target === null || typeof target !== 'object';
-  }
   private static getSerializeValueWithClassName(target:any): any {
-    if (ESSerializer.notObject(target)) {
+    if (utils.notObject(target)) {
       return target;
     }
 
@@ -54,7 +53,7 @@ class ESSerializer {
   }
 
   private static deserializeFromParsedObj(parsedObj:any, classMapping:object): any {
-    if (ESSerializer.notObject(parsedObj)) {
+    if (utils.notObject(parsedObj)) {
       return parsedObj;
     }
 
