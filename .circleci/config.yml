@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: 'cimg/node:current'
+    working_directory: ~/repo
     steps:
       - run: npm run build
 orbs:
