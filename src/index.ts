@@ -2,70 +2,29 @@
  * Created by cshao on 2021-02-09.
  */
 
+
 'use strict';
 
-const utils = require('./lib/utils');
+import {CLASS_NAME_FIELD} from './utils/constant';
+import {notObject} from './utils/general';
+import {getSerializeValueWithClassName} from './utils/serializer';
+import {getClassMappingFromClassArray} from './utils/deserializer';
 
 class ESSerializer {
-  private static CLASS_NAME_FIELD = 'className';
-
-  private static getSerializeValueWithClassName(target:any): any {
-    if (utils.notObject(target)) {
-      return target;
-    }
-
-    if (Array.isArray(target)) {
-      return target.map((t:any) => {
-        return ESSerializer.getSerializeValueWithClassName(t);
-      });
-    }
-
-    const serializedObj = {};
-    for (const k in target) {
-      // @ts-ignore
-      serializedObj[k] = ESSerializer.getSerializeValueWithClassName(target[k]);
-    }
-
-    const className:string = target.__proto__.constructor.name;
-    if (className !== 'Object') {
-      // @ts-ignore
-      serializedObj[ESSerializer.CLASS_NAME_FIELD] = className;
-    }
-    return serializedObj;
-  }
-
-  /**
-   *
-   * @param classes It's an array of Class definition. "any" is used in code only
-   * because there is no TypeScript type definition for Class.
-   */
-  private static getClassMappingFromClassArray(classes:Array<any> = []): object {
-    const classMapping:object = {};
-    classes.forEach((c) => {
-      if (!c.name) {
-        return;
-      }
-      // @ts-ignore
-      classMapping[c.name] = c;
-    });
-
-    return classMapping;
-  }
-
   private static deserializeFromParsedObj(parsedObj:any, classMapping:object): any {
-    if (utils.notObject(parsedObj)) {
+    if (notObject(parsedObj)) {
       return parsedObj;
     }
 
     const deserializedObj:object = {};
-    const classNameInParsedObj:string = parsedObj[ESSerializer.CLASS_NAME_FIELD];
+    const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
     if (classNameInParsedObj) {
       // @ts-ignore
       deserializedObj.__proto__ = ESSerializer.getProtoFromClassObj(classMapping[classNameInParsedObj], classMapping);
     }
 
     for (const k in parsedObj) {
-      if (k === ESSerializer.CLASS_NAME_FIELD) {
+      if (k === CLASS_NAME_FIELD) {
         continue;
       }
       const v = parsedObj[k];
@@ -126,7 +85,7 @@ class ESSerializer {
    * @param target
    */
   public static serialize(target:any): string {
-    return JSON.stringify(ESSerializer.getSerializeValueWithClassName(target));
+    return JSON.stringify(getSerializeValueWithClassName(target));
   }
 
   /**
@@ -135,7 +94,7 @@ class ESSerializer {
    * because there is no TypeScript type definition for Class.
    */
   public static deserialize(serializedText:string, classes?:Array<any>): any {
-    return ESSerializer.deserializeFromParsedObj(JSON.parse(serializedText), ESSerializer.getClassMappingFromClassArray(classes));
+    return ESSerializer.deserializeFromParsedObj(JSON.parse(serializedText), getClassMappingFromClassArray(classes));
   }
 }
 
