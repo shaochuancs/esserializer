@@ -4,10 +4,15 @@
 
 'use strict';
 
+import ClassC from './ClassC';
+
 class ClassB {
   private _hobby: string;
+  public toy: ClassC;
+
   constructor() {
     this._hobby = null;
+    this.toy = new ClassC();
   }
 
   get hobby(): string {

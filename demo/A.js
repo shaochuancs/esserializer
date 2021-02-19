@@ -32,6 +32,10 @@ class A extends SuperA {
   methodOfA() {
     console.log('A');
   }
+
+  static staticMethodOfA() {
+    console.log('Static A');
+  }
 }
 
 module.exports = A;

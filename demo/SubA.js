@@ -32,6 +32,10 @@ class SubA extends A {
   methodOfSubA() {
     console.log('SubA');
   }
+
+  staticMethodOfSubA() {
+    console.log('staticMethodOfSubA');
+  }
 }
 
 module.exports = SubA;

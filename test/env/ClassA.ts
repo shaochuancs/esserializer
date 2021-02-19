@@ -2,12 +2,19 @@
  * Created by cshao on 2021-02-19.
  */
 
+
 'use strict';
 
-class ClassA {
+import SuperClassA from './SuperClassA';
+
+class ClassA extends SuperClassA{
   private _name: string;
+  public age: number;
+
   constructor() {
+    super();
     this._name = null;
+    this.age = 28;
   }
 
   get name(): string {
@@ -16,6 +23,14 @@ class ClassA {
 
   set name(value: string) {
     this._name = value;
+  }
+
+  static sayHello() {
+    console.log('Hello');
+  }
+
+  getAge() {
+    return this.age;
   }
 }
 
