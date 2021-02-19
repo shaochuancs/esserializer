@@ -4,7 +4,7 @@
   "description": "ECMAScript serialization and deserialization utility",
   "main": "dist/bundle.js",
   "scripts": {
-    "test": "npx eslint ./src --ext .ts && npx jest",
+    "test": "npx eslint ./src --ext .ts && npx jest && coveralls < coverage/lcov.info && rm -rf ./coverage",
     "build": "npx webpack --config webpack.config.js"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "babel-jest": "^26.6.3",
+    "coveralls": "^3.1.0",
     "eslint": "^7.20.0",
     "jest": "^26.6.3",
     "ts-loader": "^8.0.16",

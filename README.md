@@ -1,4 +1,5 @@
 ![CircleCI](https://circleci.com/gh/shaochuancs/esserializer.svg?style=shield)
+[![Coverage Status](https://coveralls.io/repos/github/shaochuancs/esserializer/badge.svg?branch=master)](https://coveralls.io/github/shaochuancs/esserializer?branch=master)
 
 # esserializer
 ESSerializer is an ECMAScript serialization and deserialization utility.
