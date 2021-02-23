@@ -4,7 +4,7 @@
 
 'use strict';
 
-class SuperA {
+class SuperClassA {
   constructor(options) {
     this.options = (options && (typeof options === 'object')) ? options : {};
   }
@@ -17,9 +17,9 @@ class SuperA {
     this.options = options;
   }
 
-  methodOfSuperA() {
-    console.log('SuperA');
+  methodOfSuperClassA() {
+    console.log('SuperClassA');
   }
 }
 
-module.exports = SuperA;
+module.exports = SuperClassA;

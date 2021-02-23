@@ -1,6 +1,6 @@
 {
   "name": "esserializer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ECMAScript serialization and deserialization utility",
   "main": "dist/bundle.js",
   "scripts": {

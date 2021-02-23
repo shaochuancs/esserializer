@@ -4,9 +4,9 @@
 
 'use strict';
 
-const A = require('./A');
+const ClassA = require('./ClassA');
 
-class SubA extends A {
+class SubClassA extends ClassA {
   constructor(options) {
     super({xVal: 88, yVal: 99});
     Object.assign(this.options, options);
@@ -29,13 +29,13 @@ class SubA extends A {
     this.options = options;
   }
 
-  methodOfSubA() {
-    console.log('SubA');
+  methodOfSubClassA() {
+    console.log('SubClassA');
   }
 
-  staticMethodOfSubA() {
-    console.log('staticMethodOfSubA');
+  staticMethodOfSubClassA() {
+    console.log('staticMethodOfSubClassA');
   }
 }
 
-module.exports = SubA;
+module.exports = SubClassA;

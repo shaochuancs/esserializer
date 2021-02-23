@@ -20,6 +20,10 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   const deserializedObj:object = {};
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
   if (classNameInParsedObj) {
+    if (classNameInParsedObj === 'Date') {
+      return typeof parsedObj.timestamp === 'number' ? new Date(parsedObj.timestamp) : null;
+    }
+
     // @ts-ignore
     deserializedObj.__proto__ = getProtoFromClassObj(classMapping[classNameInParsedObj], classMapping);
   }
@@ -50,7 +54,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
  */
 function getClassMappingFromClassArray(classes:Array<any> = []): object {
   const classMapping:object = {};
-  classes.forEach((c) => {
+  [Date].concat(classes).forEach((c) => {
     if (!isClass(c)) {
       return;
     }
@@ -71,6 +75,11 @@ function getParentClassName(classObj:any): string {
 }
 
 function getProtoFromClassObj(classObj:any, classMapping:object): object {
+  if (!classObj) {
+    // @ts-ignore
+    return {}.__proto__;
+  }
+
   const __proto__Obj:object = {
     constructor: classObj
   };

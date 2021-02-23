@@ -4,9 +4,9 @@
 
 'use strict';
 
-const SuperA = require('./SuperA');
+const SuperClassA = require('./SuperClassA');
 
-class A extends SuperA {
+class ClassA extends SuperClassA {
   constructor(options) {
     super({xVal: 42});
     Object.assign(this.options, options);
@@ -29,13 +29,13 @@ class A extends SuperA {
     this.options = options;
   }
 
-  methodOfA() {
-    console.log('A');
+  methodOfClassA() {
+    console.log('ClassA');
   }
 
-  static staticMethodOfA() {
-    console.log('Static A');
+  static staticMethodOfClassA() {
+    console.log('Static of ClassA');
   }
 }
 
-module.exports = A;
+module.exports = ClassA;

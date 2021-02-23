@@ -1,3 +1,7 @@
+## v1.0.3 (2021-02-23)
+* Add Date support
+* Add unit test
+
 ## v1.0.2 (2021-02-09)
 Rewrite code in TypeScript
 
