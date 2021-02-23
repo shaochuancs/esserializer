@@ -49,7 +49,7 @@ const parsedObjWithDateFieldValue = {
   id: 1,
   date: {
     className: 'Date',
-    timestamp: 1613694240000
+    timestamp: 1613723040000
   }
 };
 
@@ -145,6 +145,6 @@ describe('Test deserializeFromParsedObj', () => {
 
   test('will deserialize object with Date field value', () => {
     const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue);
-    expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date('2021-02-19T08:24:00'));
+    expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date('2021-02-19T08:24:00Z'));
   });
 });
