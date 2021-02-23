@@ -6,15 +6,15 @@
 
 const ESSerializer = require('../dist/bundle');
 
-const SuperA = require('./SuperA');
-const A = require('./A');
-const SubA = require('./SubA');
-let classes = [SuperA, A, SubA];
+const SuperClassA = require('./env/SuperClassA');
+const ClassA = require('./env/ClassA');
+const SubClassA = require('./env/SubClassA');
+let classes = [SuperClassA, ClassA, SubClassA];
 
-let subAObj = new SubA({xVal: 666, zVal: 231});
+let subAObj = new SubClassA({xVal: 666, zVal: 231});
 subAObj.age = 42;
 subAObj.height = 90;
-subAObj.staticMethodOfSubA();
+subAObj.staticMethodOfSubClassA();
 console.log(subAObj);
 
 let serializedString = ESSerializer.serialize(subAObj);
@@ -26,5 +26,5 @@ console.log(deserializedObj);
 console.log(deserializedObj.age);
 console.log(deserializedObj.height);
 
-deserializedObj.methodOfSuperA();
-deserializedObj.staticMethodOfSubA();
+deserializedObj.methodOfSuperClassA();
+deserializedObj.staticMethodOfSubClassA();
