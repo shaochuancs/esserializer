@@ -66,12 +66,12 @@ describe('Test getSerializeValueWithClassName', () => {
   });
 
   test('will retain date information for Date object', () => {
-    const objWithDate = {id: 1, date: new Date(2021, 1, 18, 17, 12, 19)};
+    const objWithDate = {id: 1, date: new Date('2021-02-19T08:24:00')};
     expect(getSerializeValueWithClassName(objWithDate)).toStrictEqual({
       id: 1,
       date: {
         className: 'Date',
-        timestamp: 1613639539000
+        timestamp: 1613694240000
       }
     });
   });
