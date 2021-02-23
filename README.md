@@ -30,7 +30,8 @@ let serializedString = ESSerializer.serialize(obj);
 console.log(serializedString);
 ```
 
-To deserialize text and turn it into an corresponding instance object, invoke ESSerializer's `deserialize` method, with all involved custom classes as parameter:
+To deserialize text and turn it into an corresponding instance object, invoke ESSerializer's `deserialize` method, 
+with all involved custom classes as parameter (you don't need to include builtin classes such as `Date` in this parameter):
 
 ```js
 const ESSerializer = require('esserializer');
