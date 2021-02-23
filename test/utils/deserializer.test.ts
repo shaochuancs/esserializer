@@ -45,18 +45,28 @@ const complexParsedObj = {
   }, 'To be or not to be']
 };
 
+const parsedObjWithDateFieldValue = {
+  id: 1,
+  date: {
+    className: 'Date',
+    timestamp: 1613639539000
+  }
+};
+
 describe('Test getClassMappingFromClassArray', () => {
   test('can generate class mapping object', () => {
     expect(getClassMappingFromClassArray([ClassA, ClassB])).toStrictEqual({
       ClassA: ClassA,
-      ClassB: ClassB
+      ClassB: ClassB,
+      Date: Date
     });
   });
 
   test('can generate class mapping object and omit non-class member', () => {
     expect(getClassMappingFromClassArray([ClassA, ClassB, {name: 'Candy'}])).toStrictEqual({
       ClassA: ClassA,
-      ClassB: ClassB
+      ClassB: ClassB,
+      Date: Date
     });
   });
 });
@@ -128,8 +138,13 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
 });
 
 describe('Test deserializeFromParsedObj', () => {
-  const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC]);
   test('will deserialize complex object successfully', () => {
+    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC]);
     expect(deserializedValueForComplexObject.toy.height).toBe(29);
+  });
+
+  test('will deserialize object with Date field value', () => {
+    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue);
+    expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date(2021, 1, 18, 17, 12, 19));
   });
 });

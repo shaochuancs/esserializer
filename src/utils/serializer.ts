@@ -29,6 +29,10 @@ function getSerializeValueWithClassName(target:any): any {
   if (className !== 'Object') {
     // @ts-ignore
     serializedObj[CLASS_NAME_FIELD] = className;
+
+    if (className === 'Date') {
+      serializedObj['timestamp'] = (target as Date).getTime();
+    }
   }
   return serializedObj;
 }
