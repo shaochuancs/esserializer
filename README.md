@@ -11,6 +11,7 @@ ESSerializer support following features:
 * Retain class information of instance field value
 * Retain class extension structure
 * Support getter & setter
+* Support instanceof operator
 * Support following JavaScript builtin object: Date
 
 ## Installation

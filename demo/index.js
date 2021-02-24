@@ -20,8 +20,11 @@ console.log(subAObj);
 let serializedString = ESSerializer.serialize(subAObj);
 console.log(serializedString);
 
+console.log('--------');
+
 let deserializedObj = ESSerializer.deserialize(serializedString, classes);
 console.log(deserializedObj);
+console.log(deserializedObj instanceof SubClassA);
 
 console.log(deserializedObj.age);
 console.log(deserializedObj.height);

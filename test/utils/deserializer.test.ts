@@ -9,8 +9,7 @@ import {
   deserializeFromParsedObj,
   deserializeFromParsedObjWithClassMapping,
   getClassMappingFromClassArray,
-  getParentClassName,
-  getProtoFromClassObj
+  getParentClassName
 } from '../../src/utils/deserializer';
 
 import SuperClassA from '../env/SuperClassA';
@@ -81,34 +80,6 @@ describe('Test getParentClassName', () => {
   });
 });
 
-describe('Test getProtoFromClassObj', () => {
-  const protoOfClassA = getProtoFromClassObj(ClassA, classMapping);
-  const protoOfClassB = getProtoFromClassObj(ClassB, classMapping);
-
-  test('will compose constructor correctly', () => {
-    expect(protoOfClassB.constructor).toBe(ClassB);
-  });
-
-  test('will compose __proto__ if custom super class exists', () => {
-    // @ts-ignore
-    expect(protoOfClassA.__proto__).toStrictEqual({
-      constructor: SuperClassA
-    });
-  });
-
-  test('will retain instance method of class', () => {
-    // @ts-ignore
-    expect(protoOfClassA.getAge).toBe(ClassA.prototype.getAge);
-  });
-
-  test('support getter and setter', () => {
-    const namePropertyDescriptorInProtoOfClassA = Object.getOwnPropertyDescriptor(protoOfClassA, 'name');
-    const namePropertyDescriptorRetrievedFromClassA = Object.getOwnPropertyDescriptor(ClassA.prototype, 'name');
-    expect(namePropertyDescriptorInProtoOfClassA.get).toBe(namePropertyDescriptorRetrievedFromClassA.get);
-    expect(namePropertyDescriptorInProtoOfClassA.set).toBe(namePropertyDescriptorRetrievedFromClassA.set);
-  });
-});
-
 describe('Test deserializeFromParsedObjWithClassMapping', () => {
   const deserializedValueForNoneObject = deserializeFromParsedObjWithClassMapping(42, classMapping);
   const deserializedValueForSimpleObject = deserializeFromParsedObjWithClassMapping(simpleParsedObj, classMapping);
@@ -146,5 +117,10 @@ describe('Test deserializeFromParsedObj', () => {
   test('will deserialize object with Date field value', () => {
     const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue);
     expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date('2021-02-19T08:24:00Z'));
+  });
+
+  test('support instanceof operator', () => {
+    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC]);
+    expect(deserializedValueForComplexObject instanceof ClassB).toBe(true);
   });
 });
