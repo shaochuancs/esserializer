@@ -8,17 +8,17 @@ const SuperClassA = require('./SuperClassA');
 
 class ClassA extends SuperClassA {
   constructor(options) {
-    super({xVal: 42});
+    super({zVal: 42});
     Object.assign(this.options, options);
     this._height = null;
   }
 
   get height() {
-    return this._height+1;
+    return this._height;
   }
 
   set height(h) {
-    this._height = h - 10;
+    this._height = h;
   }
 
   getOptions() {

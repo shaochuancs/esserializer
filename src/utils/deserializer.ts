@@ -24,8 +24,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       return typeof parsedObj.timestamp === 'number' ? new Date(parsedObj.timestamp) : null;
     }
 
-    // @ts-ignore
-    deserializedObj.__proto__ = getProtoFromClassObj(classMapping[classNameInParsedObj], classMapping);
+    const classObj = classMapping[classNameInParsedObj];
+    Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
   }
 
   for (const k in parsedObj) {
@@ -74,52 +74,9 @@ function getParentClassName(classObj:any): string {
   return classObj.prototype.__proto__.constructor.name;
 }
 
-function getProtoFromClassObj(classObj:any, classMapping:object): object {
-  if (!classObj) {
-    // @ts-ignore
-    return {}.__proto__;
-  }
-
-  const __proto__Obj:object = {
-    constructor: classObj
-  };
-  const parentClassName:string = getParentClassName(classObj);
-  if (parentClassName !== 'Object') {
-    // @ts-ignore
-    __proto__Obj.__proto__ = getProtoFromClassObj(classMapping[parentClassName], classMapping);
-  }
-
-  const prototypePropertyNames = Object.getOwnPropertyNames(classObj.prototype);
-  for (const i in prototypePropertyNames) {
-    const propertyName = prototypePropertyNames[i];
-    if (propertyName === 'constructor') {
-      continue;
-    }
-
-    const propertyDescriptor = Object.getOwnPropertyDescriptor(classObj.prototype, propertyName);
-
-    // It's a plain property field
-    if (propertyDescriptor.value) {
-      // @ts-ignore
-      __proto__Obj[propertyName] = classObj.prototype[propertyName];
-      continue;
-    }
-
-    // It's a getter or setter
-    if (propertyDescriptor.get || propertyDescriptor.set) {
-      Object.defineProperty(__proto__Obj, propertyName, {
-        get: propertyDescriptor.get,
-        set: propertyDescriptor.set
-      });
-    }
-  }
-  return __proto__Obj;
-}
-
 export {
   deserializeFromParsedObj,
   deserializeFromParsedObjWithClassMapping,
   getClassMappingFromClassArray,
-  getParentClassName,
-  getProtoFromClassObj
+  getParentClassName
 };

@@ -14,11 +14,11 @@ class SubClassA extends ClassA {
   }
 
   get age() {
-    return this._age ? this._age+1 : this._age;
+    return this._age;
   }
 
   set age(age) {
-    this._age = age+3;
+    this._age = age;
   }
 
   getOptions() {
