@@ -12,6 +12,7 @@ const ESSerializer = require('../src/index');
 import ClassA from './env/ClassA';
 import ClassB from './env/ClassB';
 import ClassC from './env/ClassC';
+import Person from './env/Person';
 
 describe('Test serialize', () => {
   test('can serialize all fields of object', () => {
@@ -34,5 +35,10 @@ describe('Test deserialize', () => {
   test('can deserialize complex text', () => {
     const serializedText = '{"_hobby":"football","className":"ClassB","toy":{"_height":29,"className":"ClassC"},"friends":[{"_name":"Old man","age":88,"className":"ClassA"},{"_height":54,"className":"ClassC"},"To be or not to be"]}';
     expect(ESSerializer.deserialize(serializedText, [SuperClassA, ClassA, ClassB, ClassC]).toy.height).toBe(29);
+  });
+
+  test('can deserialize for function style class definition', () => {
+    const serializedText = '{"age":77,"className":"Person"}';
+    expect(ESSerializer.deserialize(serializedText, [Person]).isOld()).toBe(true);
   });
 });

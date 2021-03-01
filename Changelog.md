@@ -1,3 +1,6 @@
+## v1.0.5 (2021-03-01)
+* Support old function style class constructor
+
 ## v1.0.4 (2021-02-24)
 * Add instanceof operator support
 

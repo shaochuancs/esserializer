@@ -16,7 +16,14 @@ function isClass(target:any): boolean {
   if (isSupportedBuiltinClass(target)) {
     return true;
   }
-  return !!target.name && typeof target === 'function' && /^\s*class\s+/.test(target.toString());
+
+  // Adopt solution from https://stackoverflow.com/a/46759625/707451
+  try {
+    Reflect.construct(String, [], target);
+  } catch (e) {
+    return false;
+  }
+  return true;
 }
 
 export {

@@ -11,6 +11,7 @@ class SubClassA extends ClassA {
     super({xVal: 88, yVal: 99});
     Object.assign(this.options, options);
     this._age = 131;
+    this.weight = 129;
   }
 
   get age() {
@@ -19,6 +20,10 @@ class SubClassA extends ClassA {
 
   set age(age) {
     this._age = age;
+  }
+
+  getSumOfAgeAndWeight() {
+    return this._age + this.weight;
   }
 
   getOptions() {
