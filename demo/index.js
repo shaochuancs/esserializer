@@ -13,8 +13,10 @@ let classes = [SuperClassA, ClassA, SubClassA];
 
 let subAObj = new SubClassA({xVal: 666, zVal: 231});
 subAObj.age = 42;
+subAObj.weight = 88;
 subAObj.height = 90;
 subAObj.staticMethodOfSubClassA();
+console.log(subAObj.getSumOfAgeAndWeight());
 console.log(subAObj);
 
 let serializedString = ESSerializer.serialize(subAObj);
