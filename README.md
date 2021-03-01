@@ -10,8 +10,8 @@ With ESSerializer, you can serialize JavaScript class instance in JSON format, a
 ESSerializer support following features:
 * Retain class information of instance field value
 * Retain class extension structure
-* Support getter & setter
-* Support instanceof operator
+* Support both ES6 class and old function style class
+* Support following operator: instanceof, getter & setter
 * Support following JavaScript builtin object: Date
 
 ## Installation

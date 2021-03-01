@@ -16,12 +16,16 @@ import SuperClassA from '../env/SuperClassA';
 import ClassA from '../env/ClassA';
 import ClassB from '../env/ClassB';
 import ClassC from '../env/ClassC';
+import Person from '../env/Person';
 
 const classMapping = {
   SuperClassA: SuperClassA,
   ClassA: ClassA,
   ClassB: ClassB,
   ClassC: ClassC
+};
+const classPersonMapping = {
+  Person: Person
 };
 const simpleParsedObj = {
   age: 42,
@@ -84,6 +88,10 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
   const deserializedValueForNoneObject = deserializeFromParsedObjWithClassMapping(42, classMapping);
   const deserializedValueForSimpleObject = deserializeFromParsedObjWithClassMapping(simpleParsedObj, classMapping);
   const deserializedValueForComplexObject = deserializeFromParsedObjWithClassMapping(complexParsedObj, classMapping);
+  const deserializedValueForFunctionStyleConstructorInstance = deserializeFromParsedObjWithClassMapping({
+    age: 42,
+    className: 'Person'
+  }, classPersonMapping);
 
   test('will return parsedObj as it is if it\'s not an object', () => {
     expect(deserializedValueForNoneObject).toBe(42);
@@ -105,6 +113,10 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
     expect(deserializedValueForComplexObject.friends[0].name).toBe('Old man');
     expect(deserializedValueForComplexObject.friends[1].height).toBe(54);
     expect(deserializedValueForComplexObject.friends[2]).toBe('To be or not to be');
+  });
+
+  test('can deserialize function style class constructor', () => {
+    expect(deserializedValueForFunctionStyleConstructorInstance.isOld()).toBe(false);
   });
 });
 

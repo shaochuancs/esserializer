@@ -45,6 +45,6 @@ describe('Test isClass', () => {
   });
 
   test('plain function is not class', () => {
-    expect(isClass(function(x, y){return x+y;})).toBe(false);
+    expect(isClass((x, y) => {return x+y;})).toBe(false);
   });
 });

@@ -8,6 +8,8 @@
 import {isClass, notObject} from './general';
 import {CLASS_NAME_FIELD} from './constant';
 
+const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
+
 function deserializeFromParsedObj(parsedObj:any, classes?:Array<any>): any {
   return deserializeFromParsedObjWithClassMapping(parsedObj, getClassMappingFromClassArray(classes));
 }
@@ -25,7 +27,11 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     }
 
     const classObj = classMapping[classNameInParsedObj];
-    Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+    if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
+      Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+    } else {// It's class in function style.
+      classObj.prototype.constructor.call(deserializedObj)
+    }
   }
 
   for (const k in parsedObj) {
