@@ -12,6 +12,7 @@ const ESSerializer = require('../src/index');
 import ClassA from './env/ClassA';
 import ClassB from './env/ClassB';
 import ClassC from './env/ClassC';
+import MyObject from './env/MyObject';
 import Person from './env/Person';
 
 describe('Test serialize', () => {
@@ -29,6 +30,14 @@ describe('Test serialize', () => {
     const serializedTextExpected = '{\"name\":\"Tiger\",\"age\":42,\"sad\":null,\"live\":true,\"son\":{\"_size\":0,\"_name\":\"SmallTiger\",\"age\":28,\"className\":\"ClassA\"}}';
     expect(ESSerializer.serialize(objectToBeSerialized)).toStrictEqual(serializedTextExpected);
   });
+
+  test('can serialize function style class definition', () => {
+    expect(ESSerializer.serialize(new Person(38))).toStrictEqual('{\"age\":38,\"className\":\"Person\"}');
+  });
+
+  test('can serialize prototype function style class definition', () => {
+    expect(ESSerializer.serialize(new MyObject())).toStrictEqual('{\"property1\":\"First\",\"property2\":\"Second\",\"className\":\"MyObject\"}');
+  });
 });
 
 describe('Test deserialize', () => {
@@ -40,5 +49,10 @@ describe('Test deserialize', () => {
   test('can deserialize for function style class definition', () => {
     const serializedText = '{"age":77,"className":"Person"}';
     expect(ESSerializer.deserialize(serializedText, [Person]).isOld()).toBe(true);
+  });
+
+  test('can deserialize for prototype function style class definition', () => {
+    const serializedText = '{\"property1\":\"One\",\"property2\":\"Two\",\"className\":\"MyObject\"}';
+    expect(ESSerializer.deserialize(serializedText, [MyObject]).isInitialized()).toBe(true);
   });
 });
