@@ -1,3 +1,6 @@
+## v1.0.6 (2021-03-09)
+* Patch function style class support
+
 ## v1.0.5 (2021-03-01)
 * Support old function style class constructor
 

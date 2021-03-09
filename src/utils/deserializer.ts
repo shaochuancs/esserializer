@@ -19,7 +19,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     return parsedObj;
   }
 
-  const deserializedObj:object = {};
+  let deserializedObj:object = {};
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
   if (classNameInParsedObj) {
     if (classNameInParsedObj === 'Date') {
@@ -30,6 +30,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
       Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
     } else {// It's class in function style.
+      deserializedObj = Object.create(classObj.prototype.constructor.prototype);
       classObj.prototype.constructor.call(deserializedObj)
     }
   }
