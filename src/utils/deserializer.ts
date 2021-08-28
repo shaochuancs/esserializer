@@ -27,6 +27,9 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     }
 
     const classObj = classMapping[classNameInParsedObj];
+    if (!classObj) {
+      throw new Error(`Class ${classNameInParsedObj} not found`);
+    }
     if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
       Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
     } else {// It's class in function style.

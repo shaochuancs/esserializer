@@ -46,6 +46,13 @@ describe('Test deserialize', () => {
     expect(ESSerializer.deserialize(serializedText, [SuperClassA, ClassA, ClassB, ClassC]).toy.height).toBe(29);
   });
 
+  test('can throw meaningful exception if class is missing', () => {
+    const serializedText = '{"_hobby":"football","className":"ClassB","toy":{"_height":29,"className":"ClassC"},"friends":[{"_name":"Old man","age":88,"className":"ClassA"},{"_height":54,"className":"ClassC"},"To be or not to be"]}';
+    expect(() => {
+      ESSerializer.deserialize(serializedText, [SuperClassA, ClassA, ClassB]);
+    }).toThrow('Class ClassC not found');
+  });
+
   test('can deserialize for function style class definition', () => {
     const serializedText = '{"age":77,"className":"Person"}';
     expect(ESSerializer.deserialize(serializedText, [Person]).isOld()).toBe(true);
