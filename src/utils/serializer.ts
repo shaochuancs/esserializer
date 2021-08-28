@@ -25,6 +25,10 @@ function getSerializeValueWithClassName(target:any): any {
     serializedObj[k] = getSerializeValueWithClassName(target[k]);
   }
 
+  return appendClassInfo(target, serializedObj);
+}
+
+function appendClassInfo(target: any, serializedObj) {
   const className:string = target.__proto__.constructor.name;
   if (className !== 'Object') {
     // @ts-ignore
