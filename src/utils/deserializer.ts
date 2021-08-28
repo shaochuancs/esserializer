@@ -30,31 +30,40 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     if (!classObj) {
       throw new Error(`Class ${classNameInParsedObj} not found`);
     }
-    if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
-      Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
-    } else {// It's class in function style.
-      deserializedObj = Object.create(classObj.prototype.constructor.prototype);
-      classObj.prototype.constructor.call(deserializedObj)
-    }
+
+    deserializedObj = deserializeClassProperty(deserializedObj, classObj)
   }
 
   for (const k in parsedObj) {
     if (k === CLASS_NAME_FIELD) {
       continue;
     }
-    const v = parsedObj[k];
+    deserializedObj[k] = deserializeObjValueWithClassMapping(parsedObj[k], classMapping);
+  }
 
-    if (Array.isArray(v)) {
-      // @ts-ignore
-      deserializedObj[k] = v.map((item) => {
-        return deserializeFromParsedObjWithClassMapping(item, classMapping)
-      });
-    } else {
-      // @ts-ignore
-      deserializedObj[k] = deserializeFromParsedObjWithClassMapping(v, classMapping);
-    }
+  return deserializedObj;
+}
+
+function deserializeClassProperty(deserializedObj, classObj) {
+  if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
+    Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+  } else {// It's class in function style.
+    deserializedObj = Object.create(classObj.prototype.constructor.prototype);
+    classObj.prototype.constructor.call(deserializedObj)
   }
   return deserializedObj;
+}
+
+function deserializeObjValueWithClassMapping(value, classMapping) {
+  if (Array.isArray(value)) {
+    // @ts-ignore
+    return value.map((item) => {
+      return deserializeFromParsedObjWithClassMapping(item, classMapping)
+    });
+  } else {
+    // @ts-ignore
+    return deserializeFromParsedObjWithClassMapping(value, classMapping);
+  }
 }
 
 /**
