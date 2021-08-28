@@ -1,3 +1,6 @@
+## v1.0.7 (2021-08-28)
+* Refactor code and fix vulnerability
+
 ## v1.0.6 (2021-03-09)
 * Patch function style class support
 
