@@ -6,7 +6,7 @@
 'use strict';
 
 import {isClass, notObject} from './general';
-import {CLASS_NAME_FIELD} from './constant';
+import {BUILTIN_CLASS_DATE, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
 
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
@@ -22,8 +22,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   let deserializedObj:object = {};
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
   if (classNameInParsedObj) {
-    if (classNameInParsedObj === 'Date') {
-      return typeof parsedObj.timestamp === 'number' ? new Date(parsedObj.timestamp) : null;
+    if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
+      return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
     }
 
     const classObj = classMapping[classNameInParsedObj];

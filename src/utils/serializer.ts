@@ -5,7 +5,7 @@
 
 'use strict';
 
-import {CLASS_NAME_FIELD} from './constant';
+import {BUILTIN_CLASS_DATE, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
 import {notObject} from './general';
 
 function getSerializeValueWithClassName(target:any): any {
@@ -30,8 +30,8 @@ function getSerializeValueWithClassName(target:any): any {
     // @ts-ignore
     serializedObj[CLASS_NAME_FIELD] = className;
 
-    if (className === 'Date') {
-      serializedObj['timestamp'] = (target as Date).getTime();
+    if (className === BUILTIN_CLASS_DATE) {
+      serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
     }
   }
   return serializedObj;

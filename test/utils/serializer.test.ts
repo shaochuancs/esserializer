@@ -23,7 +23,7 @@ describe('Test getSerializeValueWithClassName', () => {
     const classAInstance = new ClassA();
     classAInstance.name = 'Tea';
     const arrayToBeSerialized = [classAInstance, 42, 'Leaf'];
-    const serializeValueExpected = [{_name: 'Tea', _size: 0, age: 28, className: 'ClassA'}, 42, 'Leaf'];
+    const serializeValueExpected = [{_name: 'Tea', _size: 0, age: 28, ess_cn: 'ClassA'}, 42, 'Leaf'];
     expect(getSerializeValueWithClassName(arrayToBeSerialized)).toStrictEqual(serializeValueExpected);
   });
 
@@ -48,7 +48,7 @@ describe('Test getSerializeValueWithClassName', () => {
         _name: 'SmallTiger',
         _size: 0,
         age: 28,
-        className: 'ClassA'
+        ess_cn: 'ClassA'
       }
     };
     expect(getSerializeValueWithClassName(objectToBeSerialized)).toStrictEqual(serializeValueExpected);
@@ -57,7 +57,7 @@ describe('Test getSerializeValueWithClassName', () => {
   test('will retain custom class information in serialize value', () => {
     const classAInstance = new ClassA();
     classAInstance.name = 'Water';
-    expect(getSerializeValueWithClassName(classAInstance)).toStrictEqual({_name:'Water', _size:0, age:28, className:'ClassA'});
+    expect(getSerializeValueWithClassName(classAInstance)).toStrictEqual({_name:'Water', _size:0, age:28, ess_cn:'ClassA'});
   });
 
   test('will not retain Object class information in serialize value', () => {
@@ -70,8 +70,8 @@ describe('Test getSerializeValueWithClassName', () => {
     expect(getSerializeValueWithClassName(objWithDate)).toStrictEqual({
       id: 1,
       date: {
-        className: 'Date',
-        timestamp: 1613723040000
+        ess_cn: 'Date',
+        ess_ts: 1613723040000
       }
     });
   });

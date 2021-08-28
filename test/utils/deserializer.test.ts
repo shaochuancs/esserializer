@@ -29,30 +29,30 @@ const classPersonMapping = {
 };
 const simpleParsedObj = {
   age: 42,
-  className: 'ClassA'
+  ess_cn: 'ClassA'
 };
 const complexParsedObj = {
   _hobby: 'football',
-  className: 'ClassB',
+  ess_cn: 'ClassB',
   toy: {
     _height: 29,
-    className: 'ClassC'
+    ess_cn: 'ClassC'
   },
   friends: [{
     _name: 'Old man',
     age: 88,
-    className: 'ClassA'
+    ess_cn: 'ClassA'
   }, {
     _height: 54,
-    className: 'ClassC'
+    ess_cn: 'ClassC'
   }, 'To be or not to be']
 };
 
 const parsedObjWithDateFieldValue = {
   id: 1,
   date: {
-    className: 'Date',
-    timestamp: 1613723040000
+    ess_cn: 'Date',
+    ess_ts: 1613723040000
   }
 };
 
@@ -90,7 +90,7 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
   const deserializedValueForComplexObject = deserializeFromParsedObjWithClassMapping(complexParsedObj, classMapping);
   const deserializedValueForFunctionStyleConstructorInstance = deserializeFromParsedObjWithClassMapping({
     age: 42,
-    className: 'Person'
+    ess_cn: 'Person'
   }, classPersonMapping);
 
   test('will return parsedObj as it is if it\'s not an object', () => {
