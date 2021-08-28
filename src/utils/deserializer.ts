@@ -34,14 +34,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     deserializedObj = deserializeClassProperty(deserializedObj, classObj)
   }
 
-  for (const k in parsedObj) {
-    if (k === CLASS_NAME_FIELD) {
-      continue;
-    }
-    deserializedObj[k] = deserializeObjValueWithClassMapping(parsedObj[k], classMapping);
-  }
-
-  return deserializedObj;
+  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
 }
 
 function deserializeClassProperty(deserializedObj, classObj) {
@@ -54,7 +47,17 @@ function deserializeClassProperty(deserializedObj, classObj) {
   return deserializedObj;
 }
 
-function deserializeObjValueWithClassMapping(value, classMapping) {
+function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping) {
+  for (const k in parsedObj) {
+    if (k === CLASS_NAME_FIELD) {
+      continue;
+    }
+    deserializedObj[k] = deserializeValueWithClassMapping(parsedObj[k], classMapping);
+  }
+  return deserializedObj;
+}
+
+function deserializeValueWithClassMapping(value, classMapping) {
   if (Array.isArray(value)) {
     // @ts-ignore
     return value.map((item) => {
