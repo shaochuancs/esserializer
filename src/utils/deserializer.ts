@@ -19,25 +19,24 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     return parsedObj;
   }
 
-  let deserializedObj:object = {};
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
-  if (classNameInParsedObj) {
-    if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
-      return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
-    }
-
-    const classObj = classMapping[classNameInParsedObj];
-    if (!classObj) {
-      throw new Error(`Class ${classNameInParsedObj} not found`);
-    }
-
-    deserializedObj = deserializeClassProperty(deserializedObj, classObj)
+  if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
+    return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+  }
+  if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
+    throw new Error(`Class ${classNameInParsedObj} not found`);
   }
 
-  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
+  return deserializeValuesWithClassMapping(deserializeClassProperty(classMapping[classNameInParsedObj]), parsedObj, classMapping);
 }
 
-function deserializeClassProperty(deserializedObj, classObj) {
+function deserializeClassProperty(classObj) {
+  let deserializedObj:object = {};
+
+  if (!classObj) {
+    return deserializedObj;
+  }
+
   if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
     Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
   } else {// It's class in function style.
