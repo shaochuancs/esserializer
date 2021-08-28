@@ -20,15 +20,19 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
-  if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
-    return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
-  }
   if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
     throw new Error(`Class ${classNameInParsedObj} not found`);
+  }
+  if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
+    return deserializeDate(parsedObj);
   }
 
   const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
   return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
+}
+
+function deserializeDate(parsedObj) {
+  return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
 }
 
 function deserializeClassProperty(classObj) {
