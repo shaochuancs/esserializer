@@ -4,8 +4,13 @@
 
 'use strict';
 
-const CLASS_NAME_FIELD = 'className';
+const CLASS_NAME_FIELD = 'ess_cn';
+const TIMESTAMP_FIELD = 'ess_ts';
+
+const BUILTIN_CLASS_DATE = 'Date';
 
 export {
-  CLASS_NAME_FIELD
+  BUILTIN_CLASS_DATE,
+  CLASS_NAME_FIELD,
+  TIMESTAMP_FIELD
 };
