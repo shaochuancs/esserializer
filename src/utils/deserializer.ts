@@ -27,7 +27,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     throw new Error(`Class ${classNameInParsedObj} not found`);
   }
 
-  return deserializeValuesWithClassMapping(deserializeClassProperty(classMapping[classNameInParsedObj]), parsedObj, classMapping);
+  const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
+  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
 }
 
 function deserializeClassProperty(classObj) {
