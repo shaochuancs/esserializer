@@ -41,6 +41,11 @@ describe('Test serialize', () => {
 });
 
 describe('Test deserialize', () => {
+  test('can deserialize array', () => {
+    const serializedText = '[{"age":88,"ess_cn":"Person"},{"property1":"First","property2":"Second","ess_cn":"MyObject"}]';
+    expect(Array.isArray(ESSerializer.deserialize(serializedText, [Person, MyObject]))).toBe(true);
+  });
+
   test('can deserialize complex text', () => {
     const serializedText = '{"_hobby":"football","ess_cn":"ClassB","toy":{"_height":29,"ess_cn":"ClassC"},"friends":[{"_name":"Old man","age":88,"ess_cn":"ClassA"},{"_height":54,"ess_cn":"ClassC"},"To be or not to be"]}';
     expect(ESSerializer.deserialize(serializedText, [SuperClassA, ClassA, ClassB, ClassC]).toy.height).toBe(29);
