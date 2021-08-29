@@ -19,6 +19,12 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     return parsedObj;
   }
 
+  if (Array.isArray(parsedObj)) {
+    return parsedObj.map((item) => {
+      return deserializeFromParsedObjWithClassMapping(item, classMapping)
+    });
+  }
+
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
   if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
     throw new Error(`Class ${classNameInParsedObj} not found`);
@@ -56,21 +62,9 @@ function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapp
     if (k === CLASS_NAME_FIELD) {
       continue;
     }
-    deserializedObj[k] = deserializeValueWithClassMapping(parsedObj[k], classMapping);
+    deserializedObj[k] = deserializeFromParsedObjWithClassMapping(parsedObj[k], classMapping);
   }
   return deserializedObj;
-}
-
-function deserializeValueWithClassMapping(value, classMapping) {
-  if (Array.isArray(value)) {
-    // @ts-ignore
-    return value.map((item) => {
-      return deserializeFromParsedObjWithClassMapping(item, classMapping)
-    });
-  } else {
-    // @ts-ignore
-    return deserializeFromParsedObjWithClassMapping(value, classMapping);
-  }
 }
 
 /**

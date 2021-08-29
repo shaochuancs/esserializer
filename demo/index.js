@@ -1,35 +1,27 @@
 /**
- * Created by cshao on 2019-05-23.
+ * Created by cshao on 2021-08-29.
  */
 
 'use strict';
 
 const ESSerializer = require('../dist/bundle');
+const Person = require('./env/Person');
+const MyObject = require('./env/MyObject');
 
-const SuperClassA = require('./env/SuperClassA');
-const ClassA = require('./env/ClassA');
-const SubClassA = require('./env/SubClassA');
-let classes = [SuperClassA, ClassA, SubClassA];
+// -------- support array as root --------
 
-let subAObj = new SubClassA({xVal: 666, zVal: 231});
-subAObj.age = 42;
-subAObj.weight = 88;
-subAObj.height = 90;
-subAObj.staticMethodOfSubClassA();
-console.log(subAObj.getSumOfAgeAndWeight());
-console.log(subAObj);
+const arr = [{a:88}, {b:42}];
 
-let serializedString = ESSerializer.serialize(subAObj);
-console.log(serializedString);
+const s = ESSerializer.serialize(arr);
+console.log(s);
 
-console.log('--------');
+const o = ESSerializer.deserialize(s);
+console.log(o);
 
-let deserializedObj = ESSerializer.deserialize(serializedString, classes);
-console.log(deserializedObj);
-console.log(deserializedObj instanceof SubClassA);
+const arr2 = [new Person(88), new MyObject()];
 
-console.log(deserializedObj.age);
-console.log(deserializedObj.height);
+const s2 = ESSerializer.serialize(arr2);
+console.log(s2);
 
-deserializedObj.methodOfSuperClassA();
-deserializedObj.staticMethodOfSubClassA();
+const o2 = ESSerializer.deserialize(s2, [Person, MyObject]);
+console.log(o2);
