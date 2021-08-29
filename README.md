@@ -14,6 +14,7 @@ ESSerializer support following features:
 * Support both ES6 class and old function style class
 * Support following operator: instanceof, getter & setter
 * Support following JavaScript builtin object: Date
+* Support circular structure (with ESSerializer Pro)
 
 ## Installation
 ```sh
@@ -47,7 +48,13 @@ console.log(deserializedObj);
 
 Please check the `/demo` directory in source code for all examples.
 
+## ESSerializer Pro
+With a cup of coffee ($5), you can download ESSerializer Pro and get following additional features:
+* Support circular structure
+
+Please contact shaochuancs@gmail.com if you are interested.
+
 ## License
-(The MIT License)
+(The MIT License for ESSerializer and private license for ESSerializer Pro)
 
 Copyright (c) 2019-2021 Chuan Shao &lt;shaochuancs@gmail.com&gt;

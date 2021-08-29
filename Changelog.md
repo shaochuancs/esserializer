@@ -1,3 +1,6 @@
+## v1.1.0 (2021-08-29)
+* Fix bug and announce ESSerializer Pro
+
 ## v1.0.7 (2021-08-28)
 * Refactor code and fix vulnerability
 
