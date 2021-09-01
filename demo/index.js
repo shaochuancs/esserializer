@@ -25,3 +25,12 @@ console.log(s2);
 
 const o2 = ESSerializer.deserialize(s2, [Person, MyObject]);
 console.log(o2);
+
+// -------- support Date as root --------
+
+const d = new Date();
+const serializedD = ESSerializer.serialize(d);
+console.log(serializedD);
+
+const deserializedD = ESSerializer.deserialize(serializedD);
+console.log(deserializedD);
