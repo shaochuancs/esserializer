@@ -56,6 +56,14 @@ const parsedObjWithDateFieldValue = {
   }
 };
 
+const parsedObjWithInvalidDateFieldValue = {
+  id: 1,
+  date: {
+    ess_cn: 'Date',
+    ess_ts: 'invalid timestamp'
+  }
+};
+
 describe('Test getClassMappingFromClassArray', () => {
   test('can generate class mapping object', () => {
     expect(getClassMappingFromClassArray([ClassA, ClassB])).toStrictEqual({
@@ -129,6 +137,11 @@ describe('Test deserializeFromParsedObj', () => {
   test('will deserialize object with Date field value', () => {
     const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue);
     expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date('2021-02-19T08:24:00Z'));
+  });
+
+  test('will deserialize object with invalid Date field as null', () => {
+    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithInvalidDateFieldValue);
+    expect(deserializedValueForObjWithDateFieldValue.date).toBe(null);
   });
 
   test('support instanceof operator', () => {
