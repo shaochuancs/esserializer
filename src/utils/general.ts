@@ -8,6 +8,19 @@ function notObject(target:any): boolean {
   return target === null || typeof target !== 'object';
 }
 
+function getValueFromToStringResult(result:string) {
+  switch (result) {
+    case 'Infinity':
+      return Infinity;
+    case '-Infinity':
+      return -Infinity;
+    case 'NaN':
+      return NaN;
+    default:
+      return null;
+  }
+}
+
 function isSupportedBuiltinClass(target: any): boolean {
   return [Date].indexOf(target) >= 0;
 }
@@ -27,6 +40,7 @@ function isClass(target:any): boolean {
 }
 
 export {
+  getValueFromToStringResult,
   notObject,
   isClass
 };

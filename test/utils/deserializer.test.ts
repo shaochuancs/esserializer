@@ -68,16 +68,14 @@ describe('Test getClassMappingFromClassArray', () => {
   test('can generate class mapping object', () => {
     expect(getClassMappingFromClassArray([ClassA, ClassB])).toStrictEqual({
       ClassA: ClassA,
-      ClassB: ClassB,
-      Date: Date
+      ClassB: ClassB
     });
   });
 
   test('can generate class mapping object and omit non-class member', () => {
     expect(getClassMappingFromClassArray([ClassA, ClassB, {name: 'Candy'}])).toStrictEqual({
       ClassA: ClassA,
-      ClassB: ClassB,
-      Date: Date
+      ClassB: ClassB
     });
   });
 });
@@ -93,6 +91,8 @@ describe('Test getParentClassName', () => {
 });
 
 describe('Test deserializeFromParsedObjWithClassMapping', () => {
+  const deserializedValueForNotFinite = deserializeFromParsedObjWithClassMapping({ess_cn: 'NF', ess_str: 'Infinity'}, {});
+  const deserializedValueForUndefined = deserializeFromParsedObjWithClassMapping({ess_cn: 'UD'}, {});
   const deserializedValueForNoneObject = deserializeFromParsedObjWithClassMapping(42, classMapping);
   const deserializedValueForSimpleObject = deserializeFromParsedObjWithClassMapping(simpleParsedObj, classMapping);
   const deserializedValueForComplexObject = deserializeFromParsedObjWithClassMapping(complexParsedObj, classMapping);
@@ -100,6 +100,14 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
     age: 42,
     ess_cn: 'Person'
   }, classPersonMapping);
+
+  test('will return Infinity as expected', () => {
+    expect(deserializedValueForNotFinite).toBe(Infinity);
+  });
+
+  test('will return undefined as expected', () => {
+    expect(deserializedValueForUndefined).toBe(undefined);
+  });
 
   test('will return parsedObj as it is if it\'s not an object', () => {
     expect(deserializedValueForNoneObject).toBe(42);

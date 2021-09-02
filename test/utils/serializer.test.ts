@@ -10,6 +10,10 @@ import {getSerializeValueWithClassName} from "../../src/utils/serializer";
 import ClassA from '../env/ClassA';
 
 describe('Test getSerializeValueWithClassName', () => {
+  test('return special object for undefined', () => {
+    expect(getSerializeValueWithClassName(undefined)).toStrictEqual({'ess_cn': 'UD'});
+  });
+
   test('return target as it is when it\'s not an object', () => {
     expect(getSerializeValueWithClassName(null)).toBeNull();
     expect(getSerializeValueWithClassName('TEXT')).toBe('TEXT');
@@ -42,7 +46,7 @@ describe('Test getSerializeValueWithClassName', () => {
       name: 'Tiger',
       age: 42,
       sad: null,
-      hate: undefined,
+      hate: {"ess_cn": "UD"},
       live: true,
       son: {
         _name: 'SmallTiger',

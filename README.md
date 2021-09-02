@@ -13,7 +13,7 @@ ESSerializer support following features:
 * Retain class extension structure
 * Support both ES6 class and old function style class
 * Support following operator: instanceof, getter & setter
-* Support following JavaScript builtin object: Date
+* Support following JavaScript builtin object and type: Date, Infinity, NaN, undefined
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation

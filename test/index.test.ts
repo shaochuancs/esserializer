@@ -23,7 +23,6 @@ describe('Test serialize', () => {
       name: 'Tiger',
       age: 42,
       sad: null,
-      hate: undefined,
       live: true,
       son: classAInstance
     };
@@ -66,5 +65,26 @@ describe('Test deserialize', () => {
   test('can deserialize for prototype function style class definition', () => {
     const serializedText = '{\"property1\":\"One\",\"property2\":\"Two\",\"ess_cn\":\"MyObject\"}';
     expect(ESSerializer.deserialize(serializedText, [MyObject]).isInitialized()).toBe(true);
+  });
+
+  test('can serialize and deserialize Infinity', () => {
+    const objToSerialize = {i: Infinity, ni: -Infinity};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).i).toBe(Infinity);
+    expect(ESSerializer.deserialize(serializedText).ni).toBe(-Infinity);
+  });
+
+  test('can serialize and deserialize NaN', () => {
+    const objToSerialize = {nan: NaN};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).nan).toBe(NaN);
+  });
+
+  test('can serialize and deserialize undefined', () => {
+    const objToSerialize = {u: undefined};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(Object.keys(deserializedObj).includes('u')).toBe(true);
+    expect(deserializedObj.u).toBe(undefined);
   });
 });

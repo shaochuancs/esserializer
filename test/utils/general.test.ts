@@ -5,9 +5,31 @@
 
 'use strict';
 
-import {notObject, isClass} from "../../src/utils/general";
+import {
+  getValueFromToStringResult,
+  notObject,
+  isClass
+} from "../../src/utils/general";
 
 import ClassA from '../env/ClassA';
+
+describe('Test getValueFromToStringResult', () => {
+  test('can get Infinity as expected', () => {
+    expect(getValueFromToStringResult('Infinity')).toBe(Infinity);
+  });
+
+  test('can get -Infinity as expected', () => {
+    expect(getValueFromToStringResult('-Infinity')).toBe(-Infinity);
+  });
+
+  test('can get NaN as expected', () => {
+    expect(getValueFromToStringResult('NaN')).toBe(NaN);
+  });
+
+  test('can get null as expected', () => {
+    expect(getValueFromToStringResult('unexpected')).toBe(null);
+  });
+});
 
 describe('Test notObject', () => {
   test('null is not object', () => {
@@ -36,6 +58,10 @@ describe('Test notObject', () => {
 });
 
 describe('Test isClass', () => {
+  test('builtin class is class', () => {
+    expect(isClass(Date)).toBe(true);
+  });
+
   test('imported class variable is class', () => {
     expect(isClass(ClassA)).toBe(true);
   });

@@ -5,10 +5,31 @@
 
 'use strict';
 
-import {BUILTIN_CLASS_DATE, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
+import {
+  BUILTIN_CLASS_DATE,
+  BUILTIN_TYPE_NOT_FINITE,
+  BUILTIN_TYPE_UNDEFINED,
+  CLASS_NAME_FIELD,
+  TIMESTAMP_FIELD,
+  TO_STRING_FIELD
+} from './constant';
 import {notObject} from './general';
 
 function getSerializeValueWithClassName(target:any): any {
+  if (target === undefined) {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_UNDEFINED
+    };
+  }
+
+  // Infinity, -Infinity, NaN
+  if (typeof target === 'number' && !isFinite(target)) {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_NOT_FINITE,
+      [TO_STRING_FIELD]: target.toString()
+    };
+  }
+
   if (notObject(target)) {
     return target;
   }
