@@ -6,7 +6,7 @@
 'use strict';
 
 import {isClass, notObject} from './general';
-import {BUILTIN_CLASS_DATE, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
+import {BUILTIN_CLASS_DATE, BUILTIN_TYPE_UNDEFINED, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
 
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
@@ -26,11 +26,14 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
-  if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
-    throw new Error(`Class ${classNameInParsedObj} not found`);
+  if (classNameInParsedObj === BUILTIN_TYPE_UNDEFINED) {
+    return undefined;
   }
   if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
     return deserializeDate(parsedObj);
+  }
+  if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
+    throw new Error(`Class ${classNameInParsedObj} not found`);
   }
 
   const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);

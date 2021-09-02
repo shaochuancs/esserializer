@@ -5,10 +5,14 @@
 
 'use strict';
 
-import {BUILTIN_CLASS_DATE, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
+import {BUILTIN_CLASS_DATE, BUILTIN_TYPE_UNDEFINED, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
 import {notObject} from './general';
 
 function getSerializeValueWithClassName(target:any): any {
+  if (target === undefined) {
+    return {[CLASS_NAME_FIELD]: BUILTIN_TYPE_UNDEFINED};
+  }
+
   if (notObject(target)) {
     return target;
   }

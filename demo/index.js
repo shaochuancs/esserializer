@@ -8,6 +8,11 @@ const ESSerializer = require('../dist/bundle');
 const Person = require('./env/Person');
 const MyObject = require('./env/MyObject');
 
+const objToSerialize = {a: [13, 37], n: 42, s: 'text', d: new Date(), i: Infinity, nan: NaN, u: undefined};
+const serializedText = ESSerializer.serialize(objToSerialize);
+const deserializedObj = ESSerializer.deserialize(serializedText);
+console.log(deserializedObj);
+
 // -------- support array as root --------
 
 const arr = [{a:88}, {b:42}];

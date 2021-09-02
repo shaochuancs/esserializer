@@ -93,6 +93,7 @@ describe('Test getParentClassName', () => {
 });
 
 describe('Test deserializeFromParsedObjWithClassMapping', () => {
+  const deserializedValueForUndefined = deserializeFromParsedObjWithClassMapping({ess_cn: 'UNDEFINED'}, {});
   const deserializedValueForNoneObject = deserializeFromParsedObjWithClassMapping(42, classMapping);
   const deserializedValueForSimpleObject = deserializeFromParsedObjWithClassMapping(simpleParsedObj, classMapping);
   const deserializedValueForComplexObject = deserializeFromParsedObjWithClassMapping(complexParsedObj, classMapping);
@@ -100,6 +101,10 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
     age: 42,
     ess_cn: 'Person'
   }, classPersonMapping);
+
+  test('will return undefined as expected', () => {
+    expect(deserializedValueForUndefined).toBe(undefined);
+  });
 
   test('will return parsedObj as it is if it\'s not an object', () => {
     expect(deserializedValueForNoneObject).toBe(42);
