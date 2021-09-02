@@ -67,18 +67,18 @@ describe('Test deserialize', () => {
     expect(ESSerializer.deserialize(serializedText, [MyObject]).isInitialized()).toBe(true);
   });
 
-  // test('can serialize and deserialize Infinity', () => {
-  //   const objToSerialize = {i: Infinity, ni: -Infinity};
-  //   const serializedText = ESSerializer.serialize(objToSerialize);
-  //   expect(ESSerializer.deserialize(serializedText).i).toBe(Infinity);
-  //   expect(ESSerializer.deserialize(serializedText).ni).toBe(-Infinity);
-  // });
-  //
-  // test('can serialize and deserialize NaN', () => {
-  //   const objToSerialize = {nan: NaN};
-  //   const serializedText = ESSerializer.serialize(objToSerialize);
-  //   expect(ESSerializer.deserialize(serializedText).nan).toBe(NaN);
-  // });
+  test('can serialize and deserialize Infinity', () => {
+    const objToSerialize = {i: Infinity, ni: -Infinity};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).i).toBe(Infinity);
+    expect(ESSerializer.deserialize(serializedText).ni).toBe(-Infinity);
+  });
+
+  test('can serialize and deserialize NaN', () => {
+    const objToSerialize = {nan: NaN};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).nan).toBe(NaN);
+  });
 
   test('can serialize and deserialize undefined', () => {
     const objToSerialize = {u: undefined};

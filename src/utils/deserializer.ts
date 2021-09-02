@@ -5,8 +5,19 @@
 
 'use strict';
 
-import {isClass, notObject} from './general';
-import {BUILTIN_CLASS_DATE, BUILTIN_TYPE_UNDEFINED, CLASS_NAME_FIELD, TIMESTAMP_FIELD} from './constant';
+import {
+  getValueFromToStringResult,
+  isClass,
+  notObject
+} from './general';
+import {
+  BUILTIN_CLASS_DATE,
+  BUILTIN_TYPE_NOT_FINITE,
+  BUILTIN_TYPE_UNDEFINED,
+  CLASS_NAME_FIELD,
+  TIMESTAMP_FIELD,
+  TO_STRING_FIELD
+} from './constant';
 
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
@@ -28,6 +39,9 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
   if (classNameInParsedObj === BUILTIN_TYPE_UNDEFINED) {
     return undefined;
+  }
+  if (classNameInParsedObj === BUILTIN_TYPE_NOT_FINITE) {
+    return getValueFromToStringResult(parsedObj[TO_STRING_FIELD]);
   }
   if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
     return deserializeDate(parsedObj);
@@ -77,7 +91,7 @@ function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapp
  */
 function getClassMappingFromClassArray(classes:Array<any> = []): object {
   const classMapping:object = {};
-  [Date].concat(classes).forEach((c) => {
+  classes.forEach((c) => {
     if (!isClass(c)) {
       return;
     }

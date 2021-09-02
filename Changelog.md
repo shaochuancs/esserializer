@@ -1,3 +1,6 @@
+## v1.1.1 (2021-09-02)
+* Support Infinity, NaN and undefined
+
 ## v1.1.0 (2021-08-29)
 * Fix bug and announce ESSerializer Pro
 
