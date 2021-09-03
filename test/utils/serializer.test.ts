@@ -79,4 +79,14 @@ describe('Test getSerializeValueWithClassName', () => {
       }
     });
   });
+
+  test('will retain wrapper information for Boolean object', () => {
+    const objWithBoolean = {b: new Boolean(true)};
+    expect(getSerializeValueWithClassName(objWithBoolean)).toStrictEqual({
+      b: {
+        ess_cn: 'Boolean',
+        ess_bool: true
+      }
+    });
+  });
 });

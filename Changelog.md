@@ -1,3 +1,6 @@
+## v1.1.2 (2021-09-03)
+* Support Boolean
+
 ## v1.1.1 (2021-09-02)
 * Support Infinity, NaN and undefined
 

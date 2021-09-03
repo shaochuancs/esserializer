@@ -6,9 +6,11 @@
 'use strict';
 
 import {
+  BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
+  BOOLEAN_FIELD,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
   TO_STRING_FIELD
@@ -57,6 +59,9 @@ function appendClassInfo(target: any, serializedObj) {
 
     if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
+    }
+    if (className === BUILTIN_CLASS_BOOLEAN) {
+      serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
     }
   }
   return serializedObj;

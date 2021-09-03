@@ -8,7 +8,20 @@ const ESSerializer = require('../dist/bundle');
 const Person = require('./env/Person');
 const MyObject = require('./env/MyObject');
 
-const objToSerialize = {a: [13, 37], n: 42, s: 'text', d: new Date(), i: Infinity, nan: NaN, u: undefined};
+const objToSerialize = {
+  a: [13, 37],
+  b: false,
+  b2: new Boolean(false),
+  n: 42,
+  s: 'text',
+  d: new Date(),
+  i: Infinity,
+  nan: NaN,
+  u: undefined
+};
+const stringifiedText = JSON.stringify(objToSerialize);
+const parsedObj = JSON.parse(stringifiedText);
+console.log(parsedObj);
 const serializedText = ESSerializer.serialize(objToSerialize);
 const deserializedObj = ESSerializer.deserialize(serializedText);
 console.log(deserializedObj);

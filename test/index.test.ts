@@ -87,4 +87,15 @@ describe('Test deserialize', () => {
     expect(Object.keys(deserializedObj).includes('u')).toBe(true);
     expect(deserializedObj.u).toBe(undefined);
   });
+
+  test('can serialize and deserialize Boolean wrapper object', () => {
+    const objToSerialize = {
+      f: new Boolean(false),
+      t: new Boolean(true)
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.f).toStrictEqual(new Boolean(false));
+    expect(deserializedObj.t).toStrictEqual(new Boolean(true));
+  });
 });
