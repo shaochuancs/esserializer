@@ -37,15 +37,15 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
-  if (classNameInParsedObj === BUILTIN_TYPE_UNDEFINED) {
-    return undefined;
+  switch (classNameInParsedObj) {
+    case BUILTIN_TYPE_UNDEFINED:
+      return undefined;
+    case BUILTIN_TYPE_NOT_FINITE:
+      return getValueFromToStringResult(parsedObj[TO_STRING_FIELD]);
+    case BUILTIN_CLASS_DATE:
+      return deserializeDate(parsedObj);
   }
-  if (classNameInParsedObj === BUILTIN_TYPE_NOT_FINITE) {
-    return getValueFromToStringResult(parsedObj[TO_STRING_FIELD]);
-  }
-  if (classNameInParsedObj === BUILTIN_CLASS_DATE) {
-    return deserializeDate(parsedObj);
-  }
+
   if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
     throw new Error(`Class ${classNameInParsedObj} not found`);
   }
