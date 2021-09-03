@@ -11,6 +11,8 @@ import {
   notObject
 } from './general';
 import {
+  BOOLEAN_FIELD,
+  BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
@@ -42,6 +44,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       return undefined;
     case BUILTIN_TYPE_NOT_FINITE:
       return getValueFromToStringResult(parsedObj[TO_STRING_FIELD]);
+    case BUILTIN_CLASS_BOOLEAN:
+      return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
   }
@@ -52,6 +56,10 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
 
   const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
   return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
+}
+
+function deserializeBoolean(parsedObj) {
+  return new Boolean(parsedObj[BOOLEAN_FIELD]);
 }
 
 function deserializeDate(parsedObj) {
