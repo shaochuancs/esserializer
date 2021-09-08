@@ -13,7 +13,7 @@ ESSerializer support following features:
 * Retain class extension structure
 * Support both ES6 class and old function style class
 * Support following operator: instanceof, getter & setter
-* Support following JavaScript builtin object and type: Boolean, Date, Infinity, NaN, undefined
+* Support following JavaScript builtin object and type: Boolean, Date, Infinity, NaN, undefined, and more (with ESSerializer Pro): Symbol
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation
@@ -51,6 +51,7 @@ Please check the `/demo` directory in source code for all examples.
 ## ESSerializer Pro
 With a cup of coffee ($5), you can download ESSerializer Pro and get following additional features:
 * Support circular structure
+* Support additional builtin object and type: Symbol
 
 Please contact shaochuancs@gmail.com if you are interested.
 

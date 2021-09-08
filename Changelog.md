@@ -1,3 +1,6 @@
+## v1.1.2.1 (2021-09-08)
+* Support Symbol in ESSerializer Pro
+
 ## v1.1.2 (2021-09-03)
 * Support Boolean
 
