@@ -2,14 +2,14 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:15.9.0
+      - image: cimg/node:current
     steps:
       - checkout
       - node/install-packages
       - run:
           command: npm run build
 orbs:
-  node: cimg/node:15.9.0
+  node: circleci/node@4.7.0
 workflows:
   node-tests:
     jobs:
