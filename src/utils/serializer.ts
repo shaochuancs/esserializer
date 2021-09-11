@@ -6,9 +6,10 @@
 'use strict';
 
 import {
+  ALL_BUILTIN_ERRORS,
+  BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
-  BUILTIN_CLASS_ERROR,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
   BOOLEAN_FIELD,
@@ -62,8 +63,8 @@ function appendClassInfo(target: any, serializedObj) {
       serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
-    } else if (className === BUILTIN_CLASS_ERROR) {
-      const error = target as Error;
+    } else if (ALL_BUILTIN_ERRORS.includes(className)) {
+      const error = target;
       if (error.name !== 'Error') {
         serializedObj.name = error.name;
       }
@@ -72,6 +73,10 @@ function appendClassInfo(target: any, serializedObj) {
       }
       if (error.stack) {
         serializedObj.stack = error.stack;
+      }
+
+      if (className === BUILTIN_CLASS_AGGREGATE_ERROR) {
+        serializedObj.errors = getSerializeValueWithClassName(error.errors);
       }
     }
   }

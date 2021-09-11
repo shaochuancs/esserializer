@@ -1,3 +1,6 @@
+## v1.1.3 (2021-09-11)
+* Support Error and all 7 sub-error classes
+
 ## v1.1.2 (2021-09-08)
 * Support Boolean
 * Support Symbol in ESSerializer Pro

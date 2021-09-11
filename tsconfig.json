@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "esnext.promise"
+    ]
   }
 }

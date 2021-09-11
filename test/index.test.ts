@@ -109,4 +109,102 @@ describe('Test deserialize', () => {
     expect(deserializedObj.e.name).toBe('Error');
     expect(deserializedObj.e2.message).toBe('unexpected');
   });
+
+  test('can serialize and deserialize EvalError object', () => {
+    const objToSerialize = {
+      e: new EvalError('Failed to parse')
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.message).toBe('Failed to parse');
+  });
+
+  test('can serialize and deserialize RangeError object', () => {
+    const objToSerialize = {
+      e: new RangeError('Invalid input'),
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.message).toBe('Invalid input');
+  });
+
+  test('can serialize and deserialize ReferenceError object', () => {
+    let error;
+    try {
+      // @ts-ignore
+      let a = undefinedVariable;
+    } catch (e) {
+      error = e;
+    }
+    const objToSerialize = {
+      e: error
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.name).toBe('ReferenceError');
+  });
+
+  test('can serialize and deserialize SyntaxError object', () => {
+    let error;
+    try {
+      eval('foo bar');
+    } catch (e) {
+      error = e;
+    }
+    const objToSerialize = {
+      e: error
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.message).toBe('Unexpected identifier');
+  });
+
+  test('can serialize and deserialize TypeError object', () => {
+    let error;
+    try {
+      // @ts-ignore
+      null.f();
+    } catch (e) {
+      error = e;
+    }
+    const objToSerialize = {
+      e: error
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.message).toBe('Cannot read property \'f\' of null');
+  });
+
+  test('can serialize and deserialize URIError object', () => {
+    let error;
+    try {
+      decodeURIComponent('%')
+    } catch (e) {
+      error = e;
+    }
+    const objToSerialize = {
+      e: error
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.message).toBe('URI malformed');
+  });
+
+  test('can serialize and deserialize AggregateError object', (done) => {
+    // @ts-ignore
+    Promise.any([
+      Promise.reject(new Error("find a bug")),
+      Promise.reject(new TypeError("Invalid type")),
+    ]).catch(e => {
+      const objToSerialize = {
+        e: e
+      };
+      const serializedText = ESSerializer.serialize(objToSerialize);
+      const deserializedObj = ESSerializer.deserialize(serializedText);
+      expect(deserializedObj.e.stack).toBe('AggregateError: All promises were rejected');
+      expect(deserializedObj.e.errors[0].message).toBe('find a bug');
+      expect(deserializedObj.e.errors[1].message).toBe('Invalid type');
+      done();
+    });
+  });
 });
