@@ -14,6 +14,14 @@ import {
   BOOLEAN_FIELD,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_ERROR,
+  BUILTIN_CLASS_EVAL_ERROR,
+  BUILTIN_CLASS_RANGE_ERROR,
+  BUILTIN_CLASS_REFERENCE_ERROR,
+  BUILTIN_CLASS_SYNTAX_ERROR,
+  BUILTIN_CLASS_TYPE_ERROR,
+  BUILTIN_CLASS_URI_ERROR,
+  BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
   CLASS_NAME_FIELD,
@@ -48,6 +56,22 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
+    case BUILTIN_CLASS_ERROR:
+      return deserializeError(parsedObj, Error);
+    case BUILTIN_CLASS_EVAL_ERROR:
+      return deserializeError(parsedObj, EvalError);
+    case BUILTIN_CLASS_RANGE_ERROR:
+      return deserializeError(parsedObj, RangeError);
+    case BUILTIN_CLASS_REFERENCE_ERROR:
+      return deserializeError(parsedObj, ReferenceError);
+    case BUILTIN_CLASS_SYNTAX_ERROR:
+      return deserializeError(parsedObj, SyntaxError);
+    case BUILTIN_CLASS_TYPE_ERROR:
+      return deserializeError(parsedObj, TypeError);
+    case BUILTIN_CLASS_URI_ERROR:
+      return deserializeError(parsedObj, URIError);
+    case BUILTIN_CLASS_AGGREGATE_ERROR:
+      return deserializeError(parsedObj, AggregateError);
   }
 
   if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
@@ -64,6 +88,31 @@ function deserializeBoolean(parsedObj) {
 
 function deserializeDate(parsedObj) {
   return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+}
+
+function deserializeError(parsedObj, ErrorClass) {
+  let error;
+  if (parsedObj.message) {
+    // @ts-ignore
+    error = new ErrorClass(parsedObj.message);
+  } else {
+    // @ts-ignore
+    error = new ErrorClass();
+  }
+  delete error.stack;
+
+  if (parsedObj.name) {
+    error.name = parsedObj.name;
+  }
+  if (parsedObj.stack) {
+    error.stack = parsedObj.stack;
+  }
+
+  if (ErrorClass === AggregateError) {
+    error.errors = deserializeFromParsedObjWithClassMapping(parsedObj.errors, {});
+  }
+
+  return error;
 }
 
 function deserializeClassProperty(classObj) {

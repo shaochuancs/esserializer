@@ -1,17 +1,30 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.7.0
 jobs:
+  node-version:
+    docker:
+      - image: cimg/node:current
+    steps:
+      - checkout
+      - run: node --version
   build:
     docker:
-      - image: 'cimg/node:current'
+      - image: cimg/node:current
     steps:
       - checkout
       - node/install-packages
-      - run:
-          command: npm run build
-orbs:
-  node: circleci/node@3.0.0
+      - run: npm run build
+  test:
+    docker:
+      - image: cimg/node:current
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm test
 workflows:
   node-tests:
     jobs:
-      - node/test
+      - node-version
       - build
+      - test

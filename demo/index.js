@@ -12,6 +12,7 @@ const objToSerialize = {
   a: [13, 37],
   b: false,
   b2: new Boolean(false),
+  e: new Error('unexpected exception'),
   n: 42,
   s: 'text',
   d: new Date(),

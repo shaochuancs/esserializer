@@ -92,6 +92,7 @@ describe('Test getParentClassName', () => {
 
 describe('Test deserializeFromParsedObjWithClassMapping', () => {
   const deserializedValueForBooleanObject = deserializeFromParsedObjWithClassMapping({ess_cn: 'Boolean', ess_bool: false}, {});
+  const deserializedValueForErrorObject = deserializeFromParsedObjWithClassMapping({ess_cn: 'Error', name: 'UnexpectedError', message: 'a nightmare'}, {});
   const deserializedValueForNotFinite = deserializeFromParsedObjWithClassMapping({ess_cn: 'NF', ess_str: 'Infinity'}, {});
   const deserializedValueForUndefined = deserializeFromParsedObjWithClassMapping({ess_cn: 'UD'}, {});
   const deserializedValueForNoneObject = deserializeFromParsedObjWithClassMapping(42, classMapping);
@@ -104,6 +105,10 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
 
   test('will return Boolean wrapper object as expected', () => {
     expect(deserializedValueForBooleanObject).toStrictEqual(new Boolean(false));
+  });
+
+  test('will return Error object as expected', () => {
+    expect(deserializedValueForErrorObject.name).toBe('UnexpectedError');
   });
 
   test('will return Infinity as expected', () => {
