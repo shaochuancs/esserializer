@@ -98,4 +98,15 @@ describe('Test deserialize', () => {
     expect(deserializedObj.f).toStrictEqual(new Boolean(false));
     expect(deserializedObj.t).toStrictEqual(new Boolean(true));
   });
+
+  test('can serialize and deserialize Error object', () => {
+    const objToSerialize = {
+      e: new Error(),
+      e2: new Error('unexpected')
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(deserializedObj.e.name).toBe('Error');
+    expect(deserializedObj.e2.message).toBe('unexpected');
+  });
 });

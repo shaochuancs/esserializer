@@ -13,7 +13,7 @@ import {
 import {
   BOOLEAN_FIELD,
   BUILTIN_CLASS_BOOLEAN,
-  BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_DATE, BUILTIN_CLASS_ERROR,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
   CLASS_NAME_FIELD,
@@ -48,6 +48,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
+    case BUILTIN_CLASS_ERROR:
+      return deserializeError(parsedObj);
   }
 
   if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
@@ -64,6 +66,24 @@ function deserializeBoolean(parsedObj) {
 
 function deserializeDate(parsedObj) {
   return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+}
+
+function deserializeError(parsedObj) {
+  let error;
+  if (parsedObj.message) {
+    error = new Error(parsedObj.message);
+  } else {
+    error = new Error();
+  }
+  delete error.stack;
+
+  if (parsedObj.name) {
+    error.name = parsedObj.name;
+  }
+  if (parsedObj.stack) {
+    error.stack = parsedObj.stack;
+  }
+  return error;
 }
 
 function deserializeClassProperty(classObj) {

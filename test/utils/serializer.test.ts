@@ -89,4 +89,20 @@ describe('Test getSerializeValueWithClassName', () => {
       }
     });
   });
+
+  test('will retain custom name information for Error object', () => {
+    const error = new Error('some error');
+    error.name = 'UnexpectedError';
+    delete error.stack;
+    const objWithError = {
+      e: error
+    };
+    expect(getSerializeValueWithClassName(objWithError)).toStrictEqual({
+      e: {
+        ess_cn: 'Error',
+        message: 'some error',
+        name: 'UnexpectedError'
+      }
+    });
+  });
 });
