@@ -7,7 +7,6 @@ jobs:
       - image: cimg/node:current
     steps:
       - checkout
-      - node/install-packages
       - run: node --version
   build:
     docker:
@@ -15,11 +14,17 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - run:
-          command: npm run build
+      - run: npm run build
+  test:
+    docker:
+      - image: cimg/node:current
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm test
 workflows:
   node-tests:
     jobs:
       - node-version
-      - node/test
       - build
+      - test
