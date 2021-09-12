@@ -15,6 +15,7 @@ import {
   BOOLEAN_FIELD,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_STRING,
   BUILTIN_CLASS_ERROR,
   BUILTIN_CLASS_EVAL_ERROR,
   BUILTIN_CLASS_RANGE_ERROR,
@@ -27,7 +28,7 @@ import {
   BUILTIN_TYPE_UNDEFINED,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD
+  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT
 } from './constant';
 
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
@@ -63,6 +64,8 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
 
 function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
   switch (classNameInParsedObj) {
+    case BUILTIN_TYPE_BIG_INT:
+      return deserializeBigInt(parsedObj[TO_STRING_FIELD]);
     case BUILTIN_TYPE_UNDEFINED:
       return undefined;
     case BUILTIN_TYPE_NOT_FINITE:
@@ -71,6 +74,8 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
       return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
+    case BUILTIN_CLASS_STRING:
+      return deserializeString(parsedObj);
     case BUILTIN_CLASS_ERROR:
       return deserializeError(parsedObj, Error);
     case BUILTIN_CLASS_EVAL_ERROR:
@@ -92,12 +97,20 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
   }
 }
 
+function deserializeBigInt(str) {
+  return BigInt(str);
+}
+
 function deserializeBoolean(parsedObj) {
   return new Boolean(parsedObj[BOOLEAN_FIELD]);
 }
 
 function deserializeDate(parsedObj) {
   return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+}
+
+function deserializeString(parsedObj) {
+  return new String(parsedObj[TO_STRING_FIELD]);
 }
 
 function deserializeError(parsedObj, ErrorClass) {
