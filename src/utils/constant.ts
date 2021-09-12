@@ -4,6 +4,8 @@
 
 'use strict';
 
+const ESSERIALIZER_NULL = '__ESSERIALIZER_NULL__';
+
 const BOOLEAN_FIELD = 'ess_bool';
 const CLASS_NAME_FIELD = 'ess_cn';
 const TIMESTAMP_FIELD = 'ess_ts';
@@ -34,6 +36,7 @@ const ALL_BUILTIN_ERRORS = [
 ];
 
 export {
+  ESSERIALIZER_NULL,
   ALL_BUILTIN_ERRORS,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
