@@ -11,6 +11,7 @@ import {
   notObject
 } from './general';
 import {
+  ESSERIALIZER_NULL,
   BOOLEAN_FIELD,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
@@ -47,6 +48,20 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
+  const deserializedValueForBuiltinType = _deserializeBuiltinTypes(classNameInParsedObj, parsedObj);
+  if (deserializedValueForBuiltinType !== ESSERIALIZER_NULL) {
+    return deserializedValueForBuiltinType;
+  }
+
+  if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
+    throw new Error(`Class ${classNameInParsedObj} not found`);
+  }
+
+  const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
+  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
+}
+
+function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
   switch (classNameInParsedObj) {
     case BUILTIN_TYPE_UNDEFINED:
       return undefined;
@@ -72,14 +87,9 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       return deserializeError(parsedObj, URIError);
     case BUILTIN_CLASS_AGGREGATE_ERROR:
       return deserializeError(parsedObj, AggregateError);
+    default:
+      return ESSERIALIZER_NULL;
   }
-
-  if (classNameInParsedObj && !classMapping[classNameInParsedObj]) {
-    throw new Error(`Class ${classNameInParsedObj} not found`);
-  }
-
-  const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
-  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
 }
 
 function deserializeBoolean(parsedObj) {

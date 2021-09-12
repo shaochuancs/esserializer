@@ -50,10 +50,10 @@ function getSerializeValueWithClassName(target:any): any {
     serializedObj[k] = getSerializeValueWithClassName(target[k]);
   }
 
-  return appendClassInfo(target, serializedObj);
+  return appendClassInfoAndAssignDataForBuiltinType(target, serializedObj);
 }
 
-function appendClassInfo(target: any, serializedObj) {
+function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) {
   const className:string = target.__proto__.constructor.name;
   if (className !== 'Object') {
     // @ts-ignore
@@ -64,23 +64,26 @@ function appendClassInfo(target: any, serializedObj) {
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
-      const error = target;
-      if (error.name !== 'Error') {
-        serializedObj.name = error.name;
-      }
-      if (error.message) {
-        serializedObj.message = error.message;
-      }
-      if (error.stack) {
-        serializedObj.stack = error.stack;
-      }
-
-      if (className === BUILTIN_CLASS_AGGREGATE_ERROR) {
-        serializedObj.errors = getSerializeValueWithClassName(error.errors);
-      }
+      _assignDataForErrorType(target, serializedObj, className);
     }
   }
   return serializedObj;
+}
+
+function _assignDataForErrorType(target, serializedObj, className) {
+  if (target.name !== 'Error') {
+    serializedObj.name = target.name;
+  }
+  if (target.message) {
+    serializedObj.message = target.message;
+  }
+  if (target.stack) {
+    serializedObj.stack = target.stack;
+  }
+
+  if (className === BUILTIN_CLASS_AGGREGATE_ERROR) {
+    serializedObj.errors = getSerializeValueWithClassName(target.errors);
+  }
 }
 
 export {
