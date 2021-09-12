@@ -16,34 +16,14 @@ import {
   BOOLEAN_FIELD,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT
+  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ESSERIALIZER_NULL
 } from './constant';
 import {notObject} from './general';
 
 function getSerializeValueWithClassName(target:any): any {
-  if (target === undefined) {
-    return {
-      [CLASS_NAME_FIELD]: BUILTIN_TYPE_UNDEFINED
-    };
-  }
-
-  // Infinity, -Infinity, NaN
-  if (typeof target === 'number' && !isFinite(target)) {
-    return {
-      [CLASS_NAME_FIELD]: BUILTIN_TYPE_NOT_FINITE,
-      [TO_STRING_FIELD]: target.toString()
-    };
-  }
-
-  if (typeof target === 'bigint') {
-    return {
-      [CLASS_NAME_FIELD]: BUILTIN_TYPE_BIG_INT,
-      [TO_STRING_FIELD]: target.toString()
-    };
-  }
-
-  if (notObject(target)) {
-    return target;
+  const serializeValueForBuiltinTypes = _getSerializeValueForBuiltinTypes(target);
+  if (serializeValueForBuiltinTypes !== ESSERIALIZER_NULL) {
+    return serializeValueForBuiltinTypes;
   }
 
   if (Array.isArray(target)) {
@@ -96,6 +76,35 @@ function _assignDataForErrorType(target, serializedObj, className) {
   if (className === BUILTIN_CLASS_AGGREGATE_ERROR) {
     serializedObj.errors = getSerializeValueWithClassName(target.errors);
   }
+}
+
+function _getSerializeValueForBuiltinTypes(target) {
+  if (target === undefined) {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_UNDEFINED
+    };
+  }
+
+  // Infinity, -Infinity, NaN
+  if (typeof target === 'number' && !isFinite(target)) {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_NOT_FINITE,
+      [TO_STRING_FIELD]: target.toString()
+    };
+  }
+
+  if (typeof target === 'bigint') {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_BIG_INT,
+      [TO_STRING_FIELD]: target.toString()
+    };
+  }
+
+  if (notObject(target)) {
+    return target;
+  }
+
+  return ESSERIALIZER_NULL;
 }
 
 function _shouldIgnoreEnumerableProperties(target) {
