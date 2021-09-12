@@ -207,4 +207,22 @@ describe('Test deserialize', () => {
       done();
     });
   });
+
+  test('can serialize and deserialize BigInt', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      bi: 12345678987654321n,
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).bi).toBe(12345678987654321n);
+  });
+
+  test('can serialize and deserialize String wrapper object', () => {
+    const objToSerialize = {
+      s: new String('text')
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).s).toStrictEqual(new String('text'));
+  });
 });

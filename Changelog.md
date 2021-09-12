@@ -1,3 +1,7 @@
+## v1.1.4 (2021-09-12)
+* Support String
+* Support BigInt
+
 ## v1.1.3 (2021-09-11)
 * Support Error and all 7 sub-error classes
 

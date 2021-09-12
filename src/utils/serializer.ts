@@ -10,12 +10,13 @@ import {
   BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_STRING,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
   BOOLEAN_FIELD,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD
+  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT
 } from './constant';
 import {notObject} from './general';
 
@@ -34,6 +35,13 @@ function getSerializeValueWithClassName(target:any): any {
     };
   }
 
+  if (typeof target === 'bigint') {
+    return {
+      [CLASS_NAME_FIELD]: BUILTIN_TYPE_BIG_INT,
+      [TO_STRING_FIELD]: target.toString()
+    };
+  }
+
   if (notObject(target)) {
     return target;
   }
@@ -45,9 +53,11 @@ function getSerializeValueWithClassName(target:any): any {
   }
 
   const serializedObj = {};
-  for (const k in target) {
-    // @ts-ignore
-    serializedObj[k] = getSerializeValueWithClassName(target[k]);
+  if (!_shouldIgnoreEnumerableProperties(target)) {
+    for (const k in target) {
+      // @ts-ignore
+      serializedObj[k] = getSerializeValueWithClassName(target[k]);
+    }
   }
 
   return appendClassInfoAndAssignDataForBuiltinType(target, serializedObj);
@@ -63,6 +73,8 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
+    } else if (className === BUILTIN_CLASS_STRING) {
+      serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
       _assignDataForErrorType(target, serializedObj, className);
     }
@@ -84,6 +96,11 @@ function _assignDataForErrorType(target, serializedObj, className) {
   if (className === BUILTIN_CLASS_AGGREGATE_ERROR) {
     serializedObj.errors = getSerializeValueWithClassName(target.errors);
   }
+}
+
+function _shouldIgnoreEnumerableProperties(target) {
+  const className:string = target.__proto__.constructor.name;
+  return className === BUILTIN_CLASS_STRING;
 }
 
 export {

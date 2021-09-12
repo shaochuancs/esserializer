@@ -12,17 +12,16 @@ const objToSerialize = {
   a: [13, 37],
   b: false,
   b2: new Boolean(false),
+  bi: 12345678987654321n,
   e: new Error('unexpected exception'),
   n: 42,
   s: 'text',
+  s2: new String('text2'),
   d: new Date(),
   i: Infinity,
   nan: NaN,
   u: undefined
 };
-const stringifiedText = JSON.stringify(objToSerialize);
-const parsedObj = JSON.parse(stringifiedText);
-console.log(parsedObj);
 const serializedText = ESSerializer.serialize(objToSerialize);
 const deserializedObj = ESSerializer.deserialize(serializedText);
 console.log(deserializedObj);
