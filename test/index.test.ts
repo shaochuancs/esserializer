@@ -225,4 +225,12 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).s).toStrictEqual(new String('text'));
   });
+
+  test('can serialize and deserialize Regular Expression', () => {
+    const objToSerialize = {
+      re: /ab+c/i
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).re).toStrictEqual(/ab+c/i);
+  });
 });
