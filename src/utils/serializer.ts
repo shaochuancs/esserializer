@@ -10,6 +10,7 @@ import {
   BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_REGEXP,
   BUILTIN_CLASS_STRING,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
@@ -53,6 +54,8 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
+    } else if (className === BUILTIN_CLASS_REGEXP) {
+      serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (className === BUILTIN_CLASS_STRING) {
       serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {

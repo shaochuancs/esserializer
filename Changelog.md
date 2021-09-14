@@ -1,3 +1,6 @@
+## v1.1.5 (2021-09-14)
+* Support RegExp
+
 ## v1.1.4 (2021-09-12)
 * Support String
 * Support BigInt

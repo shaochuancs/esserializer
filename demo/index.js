@@ -15,6 +15,7 @@ const objToSerialize = {
   bi: 12345678987654321n,
   e: new Error('unexpected exception'),
   n: 42,
+  re: /ab+c/i,
   s: 'text',
   s2: new String('text2'),
   d: new Date(),

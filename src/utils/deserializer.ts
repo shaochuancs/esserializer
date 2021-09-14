@@ -15,6 +15,7 @@ import {
   BOOLEAN_FIELD,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_REGEXP,
   BUILTIN_CLASS_STRING,
   BUILTIN_CLASS_ERROR,
   BUILTIN_CLASS_EVAL_ERROR,
@@ -74,6 +75,8 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
       return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
+    case BUILTIN_CLASS_REGEXP:
+      return deserializeRegExp(parsedObj);
     case BUILTIN_CLASS_STRING:
       return deserializeString(parsedObj);
     case BUILTIN_CLASS_ERROR:
@@ -107,6 +110,12 @@ function deserializeBoolean(parsedObj) {
 
 function deserializeDate(parsedObj) {
   return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+}
+
+function deserializeRegExp(parsedObj) {
+  const regExpStr = parsedObj[TO_STRING_FIELD];
+  const lastIndexOfSlash = regExpStr.lastIndexOf('/');
+  return new RegExp(regExpStr.substring(1, lastIndexOfSlash), regExpStr.substring(lastIndexOfSlash+1));
 }
 
 function deserializeString(parsedObj) {
