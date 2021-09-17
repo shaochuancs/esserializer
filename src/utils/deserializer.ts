@@ -13,6 +13,17 @@ import {
 import {
   ESSERIALIZER_NULL,
   BOOLEAN_FIELD,
+  BUILTIN_CLASS_INT8ARRAY,
+  BUILTIN_CLASS_UINT8ARRAY,
+  BUILTIN_CLASS_UINT8CLAMPEDARRAY,
+  BUILTIN_CLASS_INT16ARRAY,
+  BUILTIN_CLASS_UINT16ARRAY,
+  BUILTIN_CLASS_INT32ARRAY,
+  BUILTIN_CLASS_UINT32ARRAY,
+  BUILTIN_CLASS_FLOAT32ARRAY,
+  BUILTIN_CLASS_FLOAT64ARRAY,
+  BUILTIN_CLASS_BIGINT64ARRAY,
+  BUILTIN_CLASS_BIGUINT64ARRAY,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
@@ -29,7 +40,7 @@ import {
   BUILTIN_TYPE_UNDEFINED,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT
+  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ARRAY_FIELD
 } from './constant';
 
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
@@ -44,9 +55,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   if (Array.isArray(parsedObj)) {
-    return parsedObj.map((item) => {
-      return deserializeFromParsedObjWithClassMapping(item, classMapping)
-    });
+    return _deserializeArray(parsedObj, classMapping);
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
@@ -63,8 +72,36 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
 }
 
+function _deserializeArray(parsedObj, classMapping:object) {
+  return parsedObj.map((item) => {
+    return deserializeFromParsedObjWithClassMapping(item, classMapping)
+  });
+}
+
 function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
   switch (classNameInParsedObj) {
+    case BUILTIN_CLASS_INT8ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Int8Array);
+    case BUILTIN_CLASS_UINT8ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Uint8Array);
+    case BUILTIN_CLASS_UINT8CLAMPEDARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Uint8ClampedArray);
+    case BUILTIN_CLASS_INT16ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Int16Array);
+    case BUILTIN_CLASS_UINT16ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Uint16Array);
+    case BUILTIN_CLASS_INT32ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Int32Array);
+    case BUILTIN_CLASS_UINT32ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Uint32Array);
+    case BUILTIN_CLASS_FLOAT32ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Float32Array);
+    case BUILTIN_CLASS_FLOAT64ARRAY:
+      return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Float64Array);
+    case BUILTIN_CLASS_BIGINT64ARRAY:
+      return _deserializeBigIntArrayInstance(parsedObj[ARRAY_FIELD], BigInt64Array);
+    case BUILTIN_CLASS_BIGUINT64ARRAY:
+      return _deserializeBigIntArrayInstance(parsedObj[ARRAY_FIELD], BigUint64Array);
     case BUILTIN_TYPE_BIG_INT:
       return deserializeBigInt(parsedObj[TO_STRING_FIELD]);
     case BUILTIN_TYPE_UNDEFINED:
@@ -98,6 +135,16 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
     default:
       return ESSERIALIZER_NULL;
   }
+}
+
+function _deserializeArrayInstance(arr, ArrayClass) {
+  return new ArrayClass(arr);
+}
+
+function _deserializeBigIntArrayInstance(arr, ArrayClass) {
+  return new ArrayClass(arr.map((biObj) => {
+    return deserializeBigInt(biObj[TO_STRING_FIELD]);
+  }));
 }
 
 function deserializeBigInt(str) {

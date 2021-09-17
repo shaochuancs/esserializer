@@ -13,7 +13,7 @@ ESSerializer support following features:
 * Retain class extension structure
 * Support both ES6 class and old function style class
 * Support following operator: instanceof, getter & setter
-* Support following JavaScript builtin object and type: BigInt, Boolean, Date, RegExp, Error (and all 7 sub-error classes) Infinity, NaN, String, undefined, and more (with ESSerializer Pro): Symbol
+* Support following JavaScript builtin object and type: Array (and all 11 specific array types) BigInt, Boolean, Date, RegExp, Error (and all 7 sub-error classes) Infinity, NaN, String, undefined, and more (with ESSerializer Pro): Symbol
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation

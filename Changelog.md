@@ -1,3 +1,6 @@
+## v1.1.6 (2021-09-17)
+* Support all 11 specific array types, such as Int8Array
+
 ## v1.1.5 (2021-09-14)
 * Support RegExp
 

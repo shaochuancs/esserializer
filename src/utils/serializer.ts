@@ -6,7 +6,9 @@
 'use strict';
 
 import {
+  ALL_BUILTIN_ARRAYS,
   ALL_BUILTIN_ERRORS,
+  CLASSNAMES_WHOSE_ENUMERABLE_PROPERTIES_SHOULD_BE_IGNORED,
   BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
@@ -17,7 +19,7 @@ import {
   BOOLEAN_FIELD,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ESSERIALIZER_NULL
+  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ESSERIALIZER_NULL, ARRAY_FIELD
 } from './constant';
 import {notObject} from './general';
 
@@ -28,9 +30,7 @@ function getSerializeValueWithClassName(target:any): any {
   }
 
   if (Array.isArray(target)) {
-    return target.map((t:any) => {
-      return getSerializeValueWithClassName(t);
-    });
+    return _serializeArray(target);
   }
 
   const serializedObj = {};
@@ -58,6 +58,8 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (className === BUILTIN_CLASS_STRING) {
       serializedObj[TO_STRING_FIELD] = target.toString();
+    } else if (ALL_BUILTIN_ARRAYS.includes(className)) {
+      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(target));
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
       _assignDataForErrorType(target, serializedObj, className);
     }
@@ -110,9 +112,15 @@ function _getSerializeValueForBuiltinTypes(target) {
   return ESSERIALIZER_NULL;
 }
 
+function _serializeArray(target) {
+  return target.map((t:any) => {
+    return getSerializeValueWithClassName(t);
+  });
+}
+
 function _shouldIgnoreEnumerableProperties(target) {
   const className:string = target.__proto__.constructor.name;
-  return className === BUILTIN_CLASS_STRING;
+  return CLASSNAMES_WHOSE_ENUMERABLE_PROPERTIES_SHOULD_BE_IGNORED.includes(className);
 }
 
 export {
