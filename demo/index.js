@@ -10,6 +10,17 @@ const MyObject = require('./env/MyObject');
 
 const objToSerialize = {
   a: [13, 37],
+  a2: new Int8Array([29, 42]),
+  a3: new Uint8Array([29, 42]),
+  a4: new Uint8ClampedArray([29, 42]),
+  a5: new Int16Array([29, 42]),
+  a6: new Uint16Array([29, 42]),
+  a7: new Int32Array([29, 42]),
+  a8: new Uint32Array([29, 42]),
+  a9: new Float32Array([29, 42]),
+  a10: new Float64Array([29, 42]),
+  a11: new BigInt64Array([29n, 42n]),
+  a12: new BigUint64Array([29n, 42n]),
   b: false,
   b2: new Boolean(false),
   bi: 12345678987654321n,

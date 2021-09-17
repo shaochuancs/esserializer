@@ -233,4 +233,96 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).re).toStrictEqual(/ab+c/i);
   });
+
+  test('can serialize and deserialize Int8Array', () => {
+    const objToSerialize = {
+      a: new Int8Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Int8Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Uint8Array', () => {
+    const objToSerialize = {
+      a: new Uint8Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Uint8Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Uint8ClampedArray', () => {
+    const objToSerialize = {
+      a: new Uint8ClampedArray([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Uint8ClampedArray([29, 42]));
+  });
+
+  test('can serialize and deserialize Int16Array', () => {
+    const objToSerialize = {
+      a: new Int16Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Int16Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Uint16Array', () => {
+    const objToSerialize = {
+      a: new Uint16Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Uint16Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Int32Array', () => {
+    const objToSerialize = {
+      a: new Int32Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Int32Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Uint32Array', () => {
+    const objToSerialize = {
+      a: new Uint32Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Uint32Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Float32Array', () => {
+    const objToSerialize = {
+      a: new Float32Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Float32Array([29, 42]));
+  });
+
+  test('can serialize and deserialize Float64Array', () => {
+    const objToSerialize = {
+      a: new Float64Array([29, 42])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new Float64Array([29, 42]));
+  });
+
+  test('can serialize and deserialize BigInt64Array', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      a: new BigInt64Array([29n, 42n])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new BigInt64Array([29n, 42n]));
+  });
+
+  test('can serialize and deserialize BigUint64Array', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      a: new BigUint64Array([29n, 42n])
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new BigUint64Array([29n, 42n]));
+  });
 });
