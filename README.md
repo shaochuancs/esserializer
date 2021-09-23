@@ -5,15 +5,29 @@
 # esserializer
 ESSerializer is an ECMAScript serialization and deserialization utility.
 
-With ESSerializer, you can serialize JavaScript class instance in JSON format, and later on deserialize it into an instance object, 
-with all Class/Property/Method etc. retained. This works in both browser and Node.js environment.
+With ESSerializer, you can serialize JavaScript class instance in JSON format, and later on deserialize it into an instance object, with all Class/Property/Method etc. retained. 
+This works in both browser and Node.js environment. ESSerializer also support almost all builtin classes and types.
 
 ESSerializer support following features:
 * Retain class information of instance field value
 * Retain class extension structure
 * Support both ES6 class and old function style class
-* Support following operator: instanceof, getter & setter
-* Support following JavaScript builtin object and type: Array (and all 11 specific array types) BigInt, Boolean, Date, RegExp, Error (and all 7 sub-error classes) Infinity, NaN, String, undefined, and more (with ESSerializer Pro): Symbol
+* Support following operator: 
+  * getter & setter
+  * instanceof
+* Support following JavaScript builtin class and type: 
+  * Array (and all 11 specific array types) 
+  * BigInt
+  * Boolean
+  * Date
+  * Error (and all 7 sub-error classes)
+  * Infinity
+  * NaN
+  * RegExp
+  * Set
+  * String
+  * undefined
+  * Symbol (with ESSerializer Pro)
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation

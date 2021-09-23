@@ -172,7 +172,7 @@ describe('Test deserialize', () => {
     };
     const serializedText = ESSerializer.serialize(objToSerialize);
     const deserializedObj = ESSerializer.deserialize(serializedText);
-    expect(deserializedObj.e.message).toBe('Cannot read property \'f\' of null');
+    expect(deserializedObj.e.name).toBe('TypeError');
   });
 
   test('can serialize and deserialize URIError object', () => {
@@ -324,5 +324,13 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     // @ts-ignore
     expect(ESSerializer.deserialize(serializedText).a).toStrictEqual(new BigUint64Array([29n, 42n]));
+  });
+
+  test('can serialize and deserialize Set', () => {
+    const objToSerialize = {
+      set: new Set([42, 55, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]),
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).set).toStrictEqual(new Set([42, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]));
   });
 });

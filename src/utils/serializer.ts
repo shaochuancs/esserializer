@@ -13,6 +13,7 @@ import {
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
+  BUILTIN_CLASS_SET,
   BUILTIN_CLASS_STRING,
   BUILTIN_TYPE_NOT_FINITE,
   BUILTIN_TYPE_UNDEFINED,
@@ -30,7 +31,7 @@ function getSerializeValueWithClassName(target:any): any {
   }
 
   if (Array.isArray(target)) {
-    return _serializeArray(target);
+    return _serializeIterableToArray(target);
   }
 
   const serializedObj = {};
@@ -56,10 +57,12 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
     } else if (className === BUILTIN_CLASS_REGEXP) {
       serializedObj[TO_STRING_FIELD] = target.toString();
+    } else if (className === BUILTIN_CLASS_SET) {
+      serializedObj[ARRAY_FIELD] = _serializeIterableToArray(target);
     } else if (className === BUILTIN_CLASS_STRING) {
       serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (ALL_BUILTIN_ARRAYS.includes(className)) {
-      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(target));
+      serializedObj[ARRAY_FIELD] = _serializeIterableToArray(Array.from(target));
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
       _assignDataForErrorType(target, serializedObj, className);
     }
@@ -112,10 +115,14 @@ function _getSerializeValueForBuiltinTypes(target) {
   return ESSERIALIZER_NULL;
 }
 
-function _serializeArray(target) {
-  return target.map((t:any) => {
-    return getSerializeValueWithClassName(t);
+// Works for Array and Set.
+// Don't use for(let t of target){} statement here, as webpack will transpile it using .length property, which is not supported in Set
+function _serializeIterableToArray(target) {
+  const resultArr = [];
+  target.forEach((t) => {
+    resultArr.push(getSerializeValueWithClassName(t));
   });
+  return resultArr;
 }
 
 function _shouldIgnoreEnumerableProperties(target) {

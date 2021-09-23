@@ -27,6 +27,7 @@ import {
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
+  BUILTIN_CLASS_SET,
   BUILTIN_CLASS_STRING,
   BUILTIN_CLASS_ERROR,
   BUILTIN_CLASS_EVAL_ERROR,
@@ -42,7 +43,6 @@ import {
   TIMESTAMP_FIELD,
   TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ARRAY_FIELD
 } from './constant';
-
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
 function deserializeFromParsedObj(parsedObj:any, classes?:Array<any>): any {
@@ -59,7 +59,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const classNameInParsedObj:string = parsedObj[CLASS_NAME_FIELD];
-  const deserializedValueForBuiltinType = _deserializeBuiltinTypes(classNameInParsedObj, parsedObj);
+  const deserializedValueForBuiltinType = _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping);
   if (deserializedValueForBuiltinType !== ESSERIALIZER_NULL) {
     return deserializedValueForBuiltinType;
   }
@@ -78,7 +78,7 @@ function _deserializeArray(parsedObj, classMapping:object) {
   });
 }
 
-function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
+function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping) {
   switch (classNameInParsedObj) {
     case BUILTIN_CLASS_INT8ARRAY:
       return _deserializeArrayInstance(parsedObj[ARRAY_FIELD], Int8Array);
@@ -114,6 +114,8 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj) {
       return deserializeDate(parsedObj);
     case BUILTIN_CLASS_REGEXP:
       return deserializeRegExp(parsedObj);
+    case BUILTIN_CLASS_SET:
+      return _deserializeSet(parsedObj, classMapping);
     case BUILTIN_CLASS_STRING:
       return deserializeString(parsedObj);
     case BUILTIN_CLASS_ERROR:
@@ -163,6 +165,10 @@ function deserializeRegExp(parsedObj) {
   const regExpStr = parsedObj[TO_STRING_FIELD];
   const lastIndexOfSlash = regExpStr.lastIndexOf('/');
   return new RegExp(regExpStr.substring(1, lastIndexOfSlash), regExpStr.substring(lastIndexOfSlash+1));
+}
+
+function _deserializeSet(parsedObj, classMapping) {
+  return new Set(_deserializeArray(parsedObj[ARRAY_FIELD], classMapping));
 }
 
 function deserializeString(parsedObj) {
