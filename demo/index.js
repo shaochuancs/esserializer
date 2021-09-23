@@ -29,12 +29,14 @@ const objToSerialize = {
   re: /ab+c/i,
   s: 'text',
   s2: new String('text2'),
+  set: new Set([42, 55, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]),
   d: new Date(),
   i: Infinity,
   nan: NaN,
   u: undefined
 };
 const serializedText = ESSerializer.serialize(objToSerialize);
+console.log(serializedText);
 const deserializedObj = ESSerializer.deserialize(serializedText);
 console.log(deserializedObj);
 
