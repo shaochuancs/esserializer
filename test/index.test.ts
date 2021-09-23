@@ -172,7 +172,7 @@ describe('Test deserialize', () => {
     };
     const serializedText = ESSerializer.serialize(objToSerialize);
     const deserializedObj = ESSerializer.deserialize(serializedText);
-    expect(deserializedObj.e.message).toBe('Cannot read property \'f\' of null');
+    expect(deserializedObj.e.name).toBe('TypeError');
   });
 
   test('can serialize and deserialize URIError object', () => {
