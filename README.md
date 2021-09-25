@@ -27,6 +27,7 @@ ESSerializer support following features:
   * Set
   * String
   * undefined
+  * Map (with ESSerializer Pro)
   * Symbol (with ESSerializer Pro)
 * Support circular structure (with ESSerializer Pro)
 
@@ -47,7 +48,7 @@ let serializedString = ESSerializer.serialize(obj);
 console.log(serializedString);
 ```
 
-To deserialize text and turn it into an corresponding instance object, invoke ESSerializer's `deserialize` method, 
+To deserialize text and turn it into a corresponding instance object, invoke ESSerializer's `deserialize` method, 
 with all involved custom classes as parameter (you don't need to include builtin classes such as `Date` in this parameter):
 
 ```js
@@ -65,7 +66,9 @@ Please check the `/demo` directory in source code for all examples.
 ## ESSerializer Pro
 With a cup of coffee ($5), you can download ESSerializer Pro and get following additional features:
 * Support circular structure
-* Support additional builtin object and type: Symbol
+* Support additional builtin object and type: 
+  * Map
+  * Symbol
 
 Please contact shaochuancs@gmail.com if you are interested.
 
