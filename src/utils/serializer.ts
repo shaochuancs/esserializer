@@ -31,7 +31,7 @@ function getSerializeValueWithClassName(target:any): any {
   }
 
   if (Array.isArray(target)) {
-    return _serializeIterableToArray(target);
+    return _serializeArray(target);
   }
 
   const serializedObj = {};
@@ -58,11 +58,11 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
     } else if (className === BUILTIN_CLASS_REGEXP) {
       serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (className === BUILTIN_CLASS_SET) {
-      serializedObj[ARRAY_FIELD] = _serializeIterableToArray(target);
+      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(target));
     } else if (className === BUILTIN_CLASS_STRING) {
       serializedObj[TO_STRING_FIELD] = target.toString();
     } else if (ALL_BUILTIN_ARRAYS.includes(className)) {
-      serializedObj[ARRAY_FIELD] = _serializeIterableToArray(Array.from(target));
+      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(target));
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
       _assignDataForErrorType(target, serializedObj, className);
     }
@@ -115,14 +115,10 @@ function _getSerializeValueForBuiltinTypes(target) {
   return ESSERIALIZER_NULL;
 }
 
-// Works for Array and Set.
-// Don't use for(let t of target){} statement here, as webpack will transpile it using .length property, which is not supported in Set
-function _serializeIterableToArray(target) {
-  const resultArr = [];
-  target.forEach((t) => {
-    resultArr.push(getSerializeValueWithClassName(t));
+function _serializeArray(arr) {
+  return arr.map((elem) => {
+    return getSerializeValueWithClassName(elem);
   });
-  return resultArr;
 }
 
 function _shouldIgnoreEnumerableProperties(target) {
