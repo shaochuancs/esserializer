@@ -10,6 +10,7 @@ import {
   ALL_BUILTIN_ERRORS,
   CLASSNAMES_WHOSE_ENUMERABLE_PROPERTIES_SHOULD_BE_IGNORED,
   BUILTIN_CLASS_AGGREGATE_ERROR,
+  BUILTIN_CLASS_ARRAYBUFFER,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
@@ -51,7 +52,9 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
     // @ts-ignore
     serializedObj[CLASS_NAME_FIELD] = className;
 
-    if (className === BUILTIN_CLASS_BOOLEAN) {
+    if (className === BUILTIN_CLASS_ARRAYBUFFER) {
+      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(new Uint8Array(target)));
+    } else if (className === BUILTIN_CLASS_BOOLEAN) {
       serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();

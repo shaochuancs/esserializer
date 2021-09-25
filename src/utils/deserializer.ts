@@ -24,6 +24,7 @@ import {
   BUILTIN_CLASS_FLOAT64ARRAY,
   BUILTIN_CLASS_BIGINT64ARRAY,
   BUILTIN_CLASS_BIGUINT64ARRAY,
+  BUILTIN_CLASS_ARRAYBUFFER,
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
@@ -108,6 +109,8 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping)
       return undefined;
     case BUILTIN_TYPE_NOT_FINITE:
       return getValueFromToStringResult(parsedObj[TO_STRING_FIELD]);
+    case BUILTIN_CLASS_ARRAYBUFFER:
+      return _deserializeArrayBuffer(parsedObj[ARRAY_FIELD]);
     case BUILTIN_CLASS_BOOLEAN:
       return deserializeBoolean(parsedObj);
     case BUILTIN_CLASS_DATE:
@@ -137,6 +140,10 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping)
     default:
       return ESSERIALIZER_NULL;
   }
+}
+
+function _deserializeArrayBuffer(byteArray) {
+  return new Uint8Array(byteArray).buffer;
 }
 
 function _deserializeArrayInstance(arr, ArrayClass) {

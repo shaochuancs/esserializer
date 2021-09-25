@@ -333,4 +333,15 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).set).toStrictEqual(new Set([42, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]));
   });
+
+  test('can serialize and deserialize ArrayBuffer', () => {
+    const arrayBuffer = new ArrayBuffer(8);
+    const bufferView = new Int32Array(arrayBuffer);
+    bufferView[0] = 9876543210;
+    const objToSerialize = {
+      bf: arrayBuffer
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).bf).toStrictEqual(arrayBuffer);
+  });
 });
