@@ -17,18 +17,19 @@ ESSerializer support following features:
   * instanceof
 * Support following JavaScript builtin class and type: 
   * Array (and all 11 specific array types) 
+  * ArrayBuffer
   * BigInt
   * Boolean
   * Date
   * Error (and all 7 sub-error classes)
   * Infinity
+  * Map (with ESSerializer Pro)
   * NaN
   * RegExp
   * Set
   * String
-  * undefined
-  * Map (with ESSerializer Pro)
   * Symbol (with ESSerializer Pro)
+  * undefined
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation

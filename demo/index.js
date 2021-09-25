@@ -8,6 +8,10 @@ const ESSerializer = require('../dist/bundle');
 const Person = require('./env/Person');
 const MyObject = require('./env/MyObject');
 
+const arrayBuffer = new ArrayBuffer(8);
+const bufferView = new Int32Array(arrayBuffer);
+bufferView[0] = 9876543210;
+
 const objToSerialize = {
   a: [13, 37],
   a2: new Int8Array([29, 42]),
@@ -23,6 +27,7 @@ const objToSerialize = {
   a12: new BigUint64Array([29n, 42n]),
   b: false,
   b2: new Boolean(false),
+  bf: arrayBuffer,
   bi: 12345678987654321n,
   e: new Error('unexpected exception'),
   n: 42,
