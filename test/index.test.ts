@@ -355,4 +355,15 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).sab).toStrictEqual(sab);
   });
+
+  test('can serialize and deserialize DataView', () => {
+    const arrayBuffer2 = new ArrayBuffer(16);
+    const dataView = new DataView(arrayBuffer2);
+    dataView.setInt16(1, 42);
+    const objToSerialize = {
+      dv: dataView
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).dv).toStrictEqual(dataView);
+  });
 });

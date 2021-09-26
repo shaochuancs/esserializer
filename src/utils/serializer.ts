@@ -13,6 +13,7 @@ import {
   BUILTIN_CLASS_ARRAYBUFFER,
   BUILTIN_CLASS_SHAREDARRAYBUFFER,
   BUILTIN_CLASS_BOOLEAN,
+  BUILTIN_CLASS_DATAVIEW,
   BUILTIN_CLASS_DATE,
   BUILTIN_CLASS_REGEXP,
   BUILTIN_CLASS_SET,
@@ -57,6 +58,8 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(new Uint8Array(target)));
     } else if (className === BUILTIN_CLASS_BOOLEAN) {
       serializedObj[BOOLEAN_FIELD] = (target as Boolean).valueOf();
+    } else if (className === BUILTIN_CLASS_DATAVIEW) {
+      serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(new Uint8Array(target.buffer)));
     } else if (className === BUILTIN_CLASS_DATE) {
       serializedObj[TIMESTAMP_FIELD] = (target as Date).getTime();
     } else if (className === BUILTIN_CLASS_REGEXP) {
