@@ -344,4 +344,15 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).bf).toStrictEqual(arrayBuffer);
   });
+
+  test('can serialize and deserialize SharedArrayBuffer', () => {
+    const sab = new SharedArrayBuffer(1024);
+    const sabView = new Int32Array(sab);
+    sabView[0] = 123456789;
+    const objToSerialize = {
+      sab: sab
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).sab).toStrictEqual(sab);
+  });
 });
