@@ -16,6 +16,10 @@ const sab = new SharedArrayBuffer(1024);
 const sabView = new Int32Array(sab);
 sabView[0] = 123456789;
 
+const arrayBuffer2 = new ArrayBuffer(16);
+const dataView = new DataView(arrayBuffer2);
+dataView.setInt16(1, 42);
+
 const objToSerialize = {
   a: [13, 37],
   a2: new Int8Array([29, 42]),
@@ -33,6 +37,8 @@ const objToSerialize = {
   b2: new Boolean(false),
   bf: arrayBuffer,
   bi: 12345678987654321n,
+  d: new Date(),
+  dv: dataView,
   e: new Error('unexpected exception'),
   n: 42,
   re: /ab+c/i,
@@ -40,7 +46,6 @@ const objToSerialize = {
   s2: new String('text2'),
   sab: sab,
   set: new Set([42, 55, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]),
-  d: new Date(),
   i: Infinity,
   nan: NaN,
   u: undefined

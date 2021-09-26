@@ -20,6 +20,7 @@ ESSerializer support following features:
   * ArrayBuffer & SharedArrayBuffer
   * BigInt
   * Boolean
+  * DataView
   * Date
   * Error (and all 7 sub-error classes)
   * Infinity
