@@ -17,7 +17,7 @@ ESSerializer support following features:
   * instanceof
 * Support following JavaScript builtin class and type: 
   * Array (and all 11 specific array types) 
-  * ArrayBuffer
+  * ArrayBuffer & SharedArrayBuffer
   * BigInt
   * Boolean
   * Date
