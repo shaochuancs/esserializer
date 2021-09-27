@@ -12,7 +12,7 @@ ESSerializer support following features:
 * Retain class information of instance field value
 * Retain class extension structure
 * Support both ES6 class and old function style class
-* Support following operator: 
+* Support following operator during serialization & deserialization: 
   * getter & setter
   * instanceof
 * Support following JavaScript builtin class and type: 
