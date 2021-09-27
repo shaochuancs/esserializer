@@ -24,6 +24,7 @@ ESSerializer support following features:
   * Date
   * Error (and all 7 sub-error classes)
   * Infinity
+  * Intl (and all 7 specific internationalization classes)
   * Map (with ESSerializer Pro)
   * NaN
   * RegExp

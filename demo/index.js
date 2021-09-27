@@ -42,6 +42,7 @@ const objToSerialize = {
   e: new Error('unexpected exception'),
   ic: new Intl.Collator('de', {sensitivity: 'base'}),
   idtf: new Intl.DateTimeFormat('de-DE', {weekday: 'long'}),
+  il: new Intl.Locale("zh-CN", {hourCycle: "h12"}),
   ilf: new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }),
   inf: new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }),
   ipr: new Intl.PluralRules('ar-EG'),

@@ -32,6 +32,7 @@ import {
   BUILTIN_CLASS_INTL_COLLATOR,
   BUILTIN_CLASS_INTL_DATETIMEFORMAT,
   BUILTIN_CLASS_INTL_LISTFORMAT,
+  BUILTIN_CLASS_INTL_LOCALE,
   BUILTIN_CLASS_INTL_NUMBERFORMAT,
   BUILTIN_CLASS_INTL_PLURALRULES,
   BUILTIN_CLASS_INTL_RELATIVETIMEFORMAT,
@@ -137,6 +138,9 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping)
     case BUILTIN_CLASS_INTL_LISTFORMAT:
       // @ts-ignore
       return _deserializeIntlInstance(parsedObj, Intl.ListFormat);
+    case BUILTIN_CLASS_INTL_LOCALE:
+      // @ts-ignore
+      return new Intl.Locale(parsedObj[TO_STRING_FIELD]);
     case BUILTIN_CLASS_INTL_NUMBERFORMAT:
       return _deserializeIntlInstance(parsedObj, Intl.NumberFormat);
     case BUILTIN_CLASS_INTL_PLURALRULES:

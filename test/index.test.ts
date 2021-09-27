@@ -418,4 +418,14 @@ describe('Test deserialize', () => {
     // @ts-ignore
     expect(ESSerializer.deserialize(serializedText).irtf).toStrictEqual(new Intl.RelativeTimeFormat('zh', { style: 'narrow' }));
   });
+
+  test('can serialize and deserialize Intl.Locale', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      il: new Intl.Locale("zh-CN", {hourCycle: "h12"})
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).il).toStrictEqual(new Intl.Locale("zh-CN", {hourCycle: "h12"}));
+  });
 });
