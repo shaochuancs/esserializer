@@ -8,6 +8,7 @@
 import {
   ALL_BUILTIN_ARRAYS,
   ALL_BUILTIN_ERRORS,
+  ALL_BUILTIN_INTLS,
   CLASSNAMES_WHOSE_ENUMERABLE_PROPERTIES_SHOULD_BE_IGNORED,
   BUILTIN_CLASS_AGGREGATE_ERROR,
   BUILTIN_CLASS_ARRAYBUFFER,
@@ -22,6 +23,7 @@ import {
   BUILTIN_TYPE_UNDEFINED,
   BOOLEAN_FIELD,
   CLASS_NAME_FIELD,
+  OPTIONS_FIELD,
   TIMESTAMP_FIELD,
   TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ESSERIALIZER_NULL, ARRAY_FIELD
 } from './constant';
@@ -72,6 +74,8 @@ function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) 
       serializedObj[ARRAY_FIELD] = _serializeArray(Array.from(target));
     } else if (ALL_BUILTIN_ERRORS.includes(className)) {
       _assignDataForErrorType(target, serializedObj, className);
+    } else if (ALL_BUILTIN_INTLS.includes(className)) {
+      serializedObj[OPTIONS_FIELD] = target.resolvedOptions();
     }
   }
   return serializedObj;

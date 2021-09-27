@@ -58,8 +58,8 @@ const ESSerializer = require('esserializer');
 const SomeClass = require('./SomeClass');
 const AnotherInvolvedClass = require('./AnotherInvolvedClass');
 
-let classes = [SomeClass, AnotherInvolvedClass];
-let deserializedObj = ESSerializer.deserialize(serializedString, classes);
+let customClasses = [SomeClass, AnotherInvolvedClass];
+let deserializedObj = ESSerializer.deserialize(serializedString, customClasses);
 console.log(deserializedObj);
 ```
 
