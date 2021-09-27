@@ -366,4 +366,66 @@ describe('Test deserialize', () => {
     const serializedText = ESSerializer.serialize(objToSerialize);
     expect(ESSerializer.deserialize(serializedText).dv).toStrictEqual(dataView);
   });
+
+  test('can serialize and deserialize Intl.Collator', () => {
+    const objToSerialize = {
+      ic: new Intl.Collator('de', {sensitivity: 'base'})
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).ic).toStrictEqual(new Intl.Collator('de', {sensitivity: 'base'}));
+  });
+
+  test('can serialize and deserialize Intl.DateTimeFormat', () => {
+    const objToSerialize = {
+      idtf: new Intl.DateTimeFormat('de-DE', {weekday: 'long'})
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).idtf).toStrictEqual(new Intl.DateTimeFormat('de-DE', {weekday: 'long'}));
+  });
+
+  test('can serialize and deserialize Intl.ListFormat', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      ilf: new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' })
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).ilf).toStrictEqual(new Intl.ListFormat('en-GB', { style: 'long', type: 'conjunction' }));
+  });
+
+  test('can serialize and deserialize Intl.NumberFormat', () => {
+    const objToSerialize = {
+      inf: new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' })
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).inf).toStrictEqual(new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }));
+  });
+
+  test('can serialize and deserialize Intl.PluralRules', () => {
+    const objToSerialize = {
+      ipr: new Intl.PluralRules('ar-EG')
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    expect(ESSerializer.deserialize(serializedText).ipr).toStrictEqual(new Intl.PluralRules('ar-EG'));
+  });
+
+  test('can serialize and deserialize Intl.RelativeTimeFormat', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      irtf: new Intl.RelativeTimeFormat('zh', { style: 'narrow' })
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).irtf).toStrictEqual(new Intl.RelativeTimeFormat('zh', { style: 'narrow' }));
+  });
+
+  test('can serialize and deserialize Intl.Locale', () => {
+    const objToSerialize = {
+      // @ts-ignore
+      il: new Intl.Locale("zh-CN", {hourCycle: "h12"})
+    };
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    // @ts-ignore
+    expect(ESSerializer.deserialize(serializedText).il).toStrictEqual(new Intl.Locale("zh-CN", {hourCycle: "h12"}));
+  });
 });

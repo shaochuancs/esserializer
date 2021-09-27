@@ -29,6 +29,13 @@ import {
   BUILTIN_CLASS_BOOLEAN,
   BUILTIN_CLASS_DATAVIEW,
   BUILTIN_CLASS_DATE,
+  BUILTIN_CLASS_INTL_COLLATOR,
+  BUILTIN_CLASS_INTL_DATETIMEFORMAT,
+  BUILTIN_CLASS_INTL_LISTFORMAT,
+  BUILTIN_CLASS_INTL_LOCALE,
+  BUILTIN_CLASS_INTL_NUMBERFORMAT,
+  BUILTIN_CLASS_INTL_PLURALRULES,
+  BUILTIN_CLASS_INTL_RELATIVETIMEFORMAT,
   BUILTIN_CLASS_REGEXP,
   BUILTIN_CLASS_SET,
   BUILTIN_CLASS_STRING,
@@ -44,7 +51,10 @@ import {
   BUILTIN_TYPE_UNDEFINED,
   CLASS_NAME_FIELD,
   TIMESTAMP_FIELD,
-  TO_STRING_FIELD, BUILTIN_TYPE_BIG_INT, ARRAY_FIELD
+  TO_STRING_FIELD,
+  BUILTIN_TYPE_BIG_INT,
+  ARRAY_FIELD,
+  OPTIONS_FIELD
 } from './constant';
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
@@ -121,6 +131,23 @@ function _deserializeBuiltinTypes(classNameInParsedObj, parsedObj, classMapping)
       return _deserializeDataView(parsedObj[ARRAY_FIELD]);
     case BUILTIN_CLASS_DATE:
       return deserializeDate(parsedObj);
+    case BUILTIN_CLASS_INTL_COLLATOR:
+      return _deserializeIntlInstance(parsedObj, Intl.Collator);
+    case BUILTIN_CLASS_INTL_DATETIMEFORMAT:
+      return _deserializeIntlInstance(parsedObj, Intl.DateTimeFormat);
+    case BUILTIN_CLASS_INTL_LISTFORMAT:
+      // @ts-ignore
+      return _deserializeIntlInstance(parsedObj, Intl.ListFormat);
+    case BUILTIN_CLASS_INTL_LOCALE:
+      // @ts-ignore
+      return new Intl.Locale(parsedObj[TO_STRING_FIELD]);
+    case BUILTIN_CLASS_INTL_NUMBERFORMAT:
+      return _deserializeIntlInstance(parsedObj, Intl.NumberFormat);
+    case BUILTIN_CLASS_INTL_PLURALRULES:
+      return _deserializeIntlInstance(parsedObj, Intl.PluralRules);
+    case BUILTIN_CLASS_INTL_RELATIVETIMEFORMAT:
+      // @ts-ignore
+      return _deserializeIntlInstance(parsedObj, Intl.RelativeTimeFormat);
     case BUILTIN_CLASS_REGEXP:
       return deserializeRegExp(parsedObj);
     case BUILTIN_CLASS_SET:
@@ -185,6 +212,13 @@ function deserializeBoolean(parsedObj) {
 
 function deserializeDate(parsedObj) {
   return typeof parsedObj[TIMESTAMP_FIELD] === 'number' ? new Date(parsedObj[TIMESTAMP_FIELD]) : null;
+}
+
+function _deserializeIntlInstance(parsedObj, IntlClass) {
+  const options = parsedObj[OPTIONS_FIELD];
+  const locale = options.locale;
+  delete options.locale;
+  return new IntlClass(locale, options);
 }
 
 function deserializeRegExp(parsedObj) {
