@@ -64,6 +64,19 @@ let deserializedObj = ESSerializer.deserialize(serializedString, customClasses);
 console.log(deserializedObj);
 ```
 
+Or, you can let ESSerializer intercept require operation and detect classes automatically:
+
+```js
+const ESSerializer = require('esserializer');
+ESSerializer.interceptRequire();
+
+const SomeClass = require('./SomeClass');
+const AnotherInvolvedClass = require('./AnotherInvolvedClass');
+
+let deserializedObj = ESSerializer.deserialize(serializedString);
+console.log(deserializedObj);
+```
+
 Please check the `/demo` directory in source code for all examples.
 
 ## ESSerializer Pro
