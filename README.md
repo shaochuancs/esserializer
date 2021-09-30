@@ -70,8 +70,8 @@ Or, you can let ESSerializer intercept require operation and detect classes auto
 const ESSerializer = require('esserializer');
 ESSerializer.interceptRequire();
 
-const SomeClass = require('./SomeClass');
-const AnotherInvolvedClass = require('./AnotherInvolvedClass');
+require('./some_path/SomeClass');
+require('../../another_path/AnotherInvolvedClass');
 
 let deserializedObj = ESSerializer.deserialize(serializedString);
 console.log(deserializedObj);
