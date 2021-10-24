@@ -429,3 +429,35 @@ describe('Test deserialize', () => {
     expect(ESSerializer.deserialize(serializedText).il).toStrictEqual(new Intl.Locale("zh-CN", {hourCycle: "h12"}));
   });
 });
+
+describe('Test class registry', () => {
+  beforeEach(() => {
+    ESSerializer.clearRegisteredClasses();
+  });
+
+  test('can registerClass', () => {
+    ESSerializer.registerClass(Person);
+
+    const p = new Person(42);
+    const serializedText = ESSerializer.serialize(p);
+    expect(ESSerializer.deserialize(serializedText).isOld()).toBe(false);
+  });
+
+  test('can registerClasses', () => {
+    ESSerializer.registerClasses([SuperClassA, ClassA, ClassB, ClassC]);
+
+    const serializedText = '{"_hobby":"football","ess_cn":"ClassB","toy":{"_height":29,"ess_cn":"ClassC"},"friends":[{"_name":"Old man","age":88,"ess_cn":"ClassA"},{"_height":54,"ess_cn":"ClassC"},"To be or not to be"]}';
+    expect(ESSerializer.deserialize(serializedText).toy.height).toBe(29);
+  });
+});
+
+describe('Test clear operation', () => {
+  test('can clear registered classes', () => {
+    ESSerializer.registerClasses([SuperClassA, ClassA, ClassB, ClassC]);
+    ESSerializer.clearRegisteredClasses();
+    const serializedText = '{"_hobby":"football","ess_cn":"ClassB","toy":{"_height":29,"ess_cn":"ClassC"},"friends":[{"_name":"Old man","age":88,"ess_cn":"ClassA"},{"_height":54,"ess_cn":"ClassC"},"To be or not to be"]}';
+    expect(()=>{
+      ESSerializer.deserialize(serializedText);
+    }).toThrow('Class ClassB not found');
+  });
+});

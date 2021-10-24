@@ -4,20 +4,20 @@ orbs:
 jobs:
   node-version:
     docker:
-      - image: cimg/node:current
+      - image: cimg/node:16.12
     steps:
       - checkout
       - run: node --version
   build:
     docker:
-      - image: cimg/node:current
+      - image: cimg/node:16.12
     steps:
       - checkout
       - node/install-packages
       - run: npm run build
   test:
     docker:
-      - image: cimg/node:current
+      - image: cimg/node:16.12
     steps:
       - checkout
       - node/install-packages

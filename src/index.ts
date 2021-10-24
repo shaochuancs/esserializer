@@ -18,6 +18,8 @@ class ESSerializer {
   private static isRequireIntercepted = false;
   private static requiredClasses:object = {};
 
+  private static registeredClasses:Array<any> = [];
+
   public static interceptRequire() {
     if (this.isRequireIntercepted) {
       return;
@@ -40,6 +42,30 @@ class ESSerializer {
     };
   }
 
+  public static clearRequiredClasses() {
+    this.requiredClasses = {};
+  }
+
+  /**
+   * Globally register class, "any" is used in code only because there is no TypeScript type definition for Class.
+   * @param classDef
+   */
+  public static registerClass(classDef:any) {
+    this.registeredClasses.push(classDef);
+  }
+
+  /**
+   * Globally register classes, "any" is used in code only because there is no TypeScript type definition for Class.
+   * @param classes
+   */
+  public static registerClasses(classes:Array<any>) {
+    this.registeredClasses = this.registeredClasses.concat(classes);
+  }
+
+  public static clearRegisteredClasses() {
+    this.registeredClasses = [];
+  }
+
   /**
    * @param target
    */
@@ -53,7 +79,7 @@ class ESSerializer {
    * because there is no TypeScript type definition for Class.
    */
   public static deserialize(serializedText:string, classes:Array<any> = []): any {
-    return deserializeFromParsedObj(JSON.parse(serializedText), Object.values(this.requiredClasses).concat(classes));
+    return deserializeFromParsedObj(JSON.parse(serializedText), Object.values(this.requiredClasses).concat(this.registeredClasses).concat(classes));
   }
 }
 
