@@ -450,3 +450,14 @@ describe('Test class registry', () => {
     expect(ESSerializer.deserialize(serializedText).toy.height).toBe(29);
   });
 });
+
+describe('Test clear operation', () => {
+  test('can clear registered classes', () => {
+    ESSerializer.registerClasses([SuperClassA, ClassA, ClassB, ClassC]);
+    ESSerializer.clearRegisteredClasses();
+    const serializedText = '{"_hobby":"football","ess_cn":"ClassB","toy":{"_height":29,"ess_cn":"ClassC"},"friends":[{"_name":"Old man","age":88,"ess_cn":"ClassA"},{"_height":54,"ess_cn":"ClassC"},"To be or not to be"]}';
+    expect(()=>{
+      ESSerializer.deserialize(serializedText);
+    }).toThrow('Class ClassB not found');
+  });
+});
