@@ -37,6 +37,19 @@ describe('Test serialize', () => {
   test('can serialize prototype function style class definition', () => {
     expect(ESSerializer.serialize(new MyObject())).toStrictEqual('{\"property1\":\"First\",\"property2\":\"Second\",\"ess_cn\":\"MyObject\"}');
   });
+
+  test('can ignore properties during serialization', () => {
+    const objectToBeSerialized = {
+      name: 'Tiger',
+      age: 42,
+      sad: null,
+      live: true
+    };
+    const serializedTextExpected = '{\"age\":42,\"sad\":null,\"live\":true}';
+    expect(ESSerializer.serialize(objectToBeSerialized, {
+      ignoreProperties: ['name']
+    })).toStrictEqual(serializedTextExpected);
+  });
 });
 
 describe('Test deserialize', () => {

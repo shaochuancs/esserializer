@@ -5,6 +5,7 @@
 
 'use strict';
 
+import SerializeOptions from "../model/SerializeOptions";
 import {
   ALL_BUILTIN_ARRAYS,
   ALL_BUILTIN_ERRORS,
@@ -29,7 +30,7 @@ import {
 } from './constant';
 import {notObject} from './general';
 
-function getSerializeValueWithClassName(target:any): any {
+function getSerializeValueWithClassName(target:any, options:SerializeOptions = {}): any {
   const serializeValueForBuiltinTypes = _getSerializeValueForBuiltinTypes(target);
   if (serializeValueForBuiltinTypes !== ESSERIALIZER_NULL) {
     return serializeValueForBuiltinTypes;
@@ -42,6 +43,9 @@ function getSerializeValueWithClassName(target:any): any {
   const serializedObj = {};
   if (!_shouldIgnoreEnumerableProperties(target)) {
     for (const k in target) {
+      if (options.ignoreProperties && options.ignoreProperties.includes(k)) {
+        continue;
+      }
       // @ts-ignore
       serializedObj[k] = getSerializeValueWithClassName(target[k]);
     }
