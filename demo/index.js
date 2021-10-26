@@ -55,9 +55,12 @@ const objToSerialize = {
   set: new Set([42, 55, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]),
   i: Infinity,
   nan: NaN,
-  u: undefined
+  u: undefined,
+  unwantedField: 'This value should be removed during serialization'
 };
-const serializedText = ESSerializer.serialize(objToSerialize);
+const serializedText = ESSerializer.serialize(objToSerialize, {
+  ignoreProperties: ['unwantedField']
+});
 console.log(serializedText);
 const deserializedObj = ESSerializer.deserialize(serializedText);
 console.log(deserializedObj);

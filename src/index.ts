@@ -5,6 +5,8 @@
 
 'use strict';
 
+import SerializeOptions from "./model/SerializeOptions";
+
 import {getSerializeValueWithClassName} from './utils/serializer';
 import {deserializeFromParsedObj} from './utils/deserializer';
 
@@ -69,8 +71,8 @@ class ESSerializer {
   /**
    * @param target
    */
-  public static serialize(target:any): string {
-    return JSON.stringify(getSerializeValueWithClassName(target));
+  public static serialize(target:any, options:SerializeOptions = {}): string {
+    return JSON.stringify(getSerializeValueWithClassName(target, options));
   }
 
   /**
