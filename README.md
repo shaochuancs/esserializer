@@ -34,6 +34,7 @@ ESSerializer support following features:
   * Symbol (with ESSerializer Pro)
   * undefined
 * Support ignoring target properties during serialization
+* Support intercept target properties during serialization
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation
@@ -55,11 +56,16 @@ let serializedString = ESSerializer.serialize(obj);
 console.log(serializedString);
 ```
 
-You can pass an options object during serialization and ignore unwanted properties:
+You can pass an options object during serialization and ignore unwanted properties, or intercept target properties:
 
 ```js
 let serializedString = ESSerializer.serialize(obj, {
-  ignoreProperties: ['unwantedFieldX', 'unwantedFieldY']
+  ignoreProperties: ['unwantedFieldX', 'unwantedFieldY'],
+  interceptProperties: {
+    propertyX: function (value) {
+      return value + 1;
+    }
+  }
 });
 ```
 

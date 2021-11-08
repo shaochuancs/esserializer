@@ -5,7 +5,8 @@
 'use strict';
 
 interface SerializeOptions {
-  ignoreProperties?: Array<string>
+  ignoreProperties?: Array<string>,
+  interceptProperties?: Record<string, Function>
 }
 
 export default SerializeOptions;

@@ -42,10 +42,19 @@ function getSerializeValueWithClassName(target:any, options:SerializeOptions = {
 
   const serializedObj = {};
   if (!_shouldIgnoreEnumerableProperties(target)) {
-    for (const k in target) {
-      if (options.ignoreProperties && options.ignoreProperties.includes(k)) {
-        continue;
+    if (options.ignoreProperties) {
+      options.ignoreProperties.forEach((ignored) => {
+        delete target[ignored];
+      });
+    }
+
+    if (options.interceptProperties) {
+      for (const intercepted in options.interceptProperties) {
+        target[intercepted] = options.interceptProperties[intercepted].call(target, target[intercepted]);
       }
+    }
+
+    for (const k in target) {
       // @ts-ignore
       serializedObj[k] = getSerializeValueWithClassName(target[k]);
     }
