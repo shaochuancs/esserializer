@@ -50,6 +50,25 @@ describe('Test serialize', () => {
       ignoreProperties: ['name']
     })).toStrictEqual(serializedTextExpected);
   });
+
+  test('can intercept properties during serialization', () => {
+    const objectToBeSerialized = {
+      name: 'Tiger',
+      age: 42,
+      yearsLater: 9,
+      sad: null,
+      live: true
+    };
+    const serializedTextExpected = '{\"name\":\"Tiger\",\"age\":51,\"yearsLater\":9,\"sad\":null,\"live\":true}';
+    expect(ESSerializer.serialize(objectToBeSerialized, {
+      interceptProperties: {
+        age: function (value) {
+          // @ts-ignore
+          return value + this.yearsLater; // The "this" here points to  objectToBeSerialized, "this" is not working in arrow function
+        }
+      }
+    })).toStrictEqual(serializedTextExpected);
+  });
 });
 
 describe('Test deserialize', () => {

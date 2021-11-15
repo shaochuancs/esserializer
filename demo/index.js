@@ -59,7 +59,12 @@ const objToSerialize = {
   unwantedField: 'This value should be removed during serialization'
 };
 const serializedText = ESSerializer.serialize(objToSerialize, {
-  ignoreProperties: ['unwantedField']
+  ignoreProperties: ['unwantedField'],
+  interceptProperties: {
+    n: function (value) {
+      return value + this.a[0];
+    }
+  }
 });
 console.log(serializedText);
 const deserializedObj = ESSerializer.deserialize(serializedText);

@@ -34,6 +34,7 @@ ESSerializer support following features:
   * Symbol (with ESSerializer Pro)
   * undefined
 * Support ignoring target properties during serialization
+* Support intercept target properties during serialization
 * Support circular structure (with ESSerializer Pro)
 
 ## Installation
@@ -49,19 +50,30 @@ To serialize JavaScript object, invoke ESSerializer's `serialize` method:
 const ESSerializer = require('esserializer');
 const ClassA = require('./ClassA');
 
-let obj = new ClassA();
-// do something here, such as obj.methodOfClassA(42)
-let serializedString = ESSerializer.serialize(obj);
-console.log(serializedString);
+const obj = new ClassA();
+// do something here, such as obj.methodOfClassA()
+const serializedString = ESSerializer.serialize(obj);
 ```
 
-You can pass an options object during serialization and ignore unwanted properties:
+You can also pass an options object during serialization and ignore unwanted properties, or intercept target properties:
 
 ```js
-let serializedString = ESSerializer.serialize(obj, {
-  ignoreProperties: ['unwantedFieldX', 'unwantedFieldY']
+const serializedString = ESSerializer.serialize(obj, {
+  ignoreProperties: ['unwantedFieldX', 'unwantedFieldY'],
+  interceptProperties: {
+    propertyX: function (value) {
+      return value + 1; // After serialization, value of propertyX would be equal to its original value plus 1. Also, "this" can be used here to represent obj.
+    }
+  }
 });
 ```
+
+Serialization options:
+
+| Option              | Type   | Description                                                                                                                                                                |
+|---------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ignoreProperties    | Array  | Array of string, represent all properties that would be ignored.                                                                                                           |
+| interceptProperties | Object | Object whose key represents property to be intercepted, and its Function value represents how to intercept. Properties' original value is passed to Function as parameter. |
 
 ### Deserialization
 To deserialize text and turn it into a corresponding instance object, invoke ESSerializer's `deserialize` method, 
@@ -72,34 +84,26 @@ const ClassA = require('./ClassA');
 const ClassB = require('./ClassB');
 const ClassC = require('./ClassC');
 
-let deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
-console.log(deserializedObj);
+const deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
 ```
 
 Or, you can register some classes globally. Once class is registered, it will be remembered by ESSerializer in all files:
 ```js
-const ESSerializer = require('esserializer');
-const ClassA = require('./ClassA');
-const ClassB = require('./ClassB');
-const ClassC = require('./ClassC');
 ESSerializer.registerClasses([ClassA, ClassB, ClassC]);
-let deserializedObj = ESSerializer.deserialize(serializedString);
-console.log(deserializedObj);
+const deserializedObj = ESSerializer.deserialize(serializedString);
 ```
 
 Or, you can let ESSerializer intercept require operation and detect classes automatically. Once class is detected, it will
 be remembered by ESSerializer in all files:
 ```js
-const ESSerializer = require('esserializer');
 ESSerializer.interceptRequire();
 require('./ClassA');
 require('./ClassB');
 require('./ClassC');
-let deserializedObj = ESSerializer.deserialize(serializedString);
-console.log(deserializedObj);
+const deserializedObj = ESSerializer.deserialize(serializedString);
 ```
 
-Custom classes parameter / Class registry / Require interception, these 3 methods can be combined during deserialzation. 
+Custom-Classes-Parameter / Class-Registry / Require-Interception, these 3 methods can be used in combination during deserialzation. 
 
 ### Demo
 Please check the `/demo` directory in source code for all examples.
