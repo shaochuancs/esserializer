@@ -75,6 +75,7 @@ Serialization options:
 | ignoreProperties    | Array  | Array of string, represent all properties that would be ignored.                                                                                                           |
 | interceptProperties | Object | Object whose key represents property to be intercepted, and its Function value represents how to intercept. Properties' original value is passed to Function as parameter. |
 
+
 ### Deserialization
 To deserialize text and turn it into a corresponding instance object, invoke ESSerializer's `deserialize` method, 
 with all involved custom classes as parameter (you don't need to include builtin classes such as `Date` in this parameter):
