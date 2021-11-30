@@ -12,7 +12,7 @@ import {deserializeFromParsedObj} from './utils/deserializer';
 
 let Module;
 if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
-  Module = require('module');
+  Module = eval('require')('module'); // Prevent webpack from packaging module here, using eval.
 }
 
 class ESSerializer {
