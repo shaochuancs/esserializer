@@ -48,6 +48,7 @@ const objToSerialize = {
   ipr: new Intl.PluralRules('ar-EG'),
   irtf: new Intl.RelativeTimeFormat('zh', { style: 'narrow' }),
   n: 42,
+  n2: null,
   re: /ab+c/i,
   s: 'text',
   s2: new String('text2'),
