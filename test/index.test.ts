@@ -112,6 +112,14 @@ describe('Test deserialize', () => {
     expect(ESSerializer.deserialize(serializedText).nan).toBe(NaN);
   });
 
+  test('can serialize and deserialize null', () => {
+    const objToSerialize = {n: null};
+    const serializedText = ESSerializer.serialize(objToSerialize);
+    const deserializedObj = ESSerializer.deserialize(serializedText);
+    expect(Object.keys(deserializedObj).includes('n')).toBe(true);
+    expect(deserializedObj.n).toBe(null);
+  });
+
   test('can serialize and deserialize undefined', () => {
     const objToSerialize = {u: undefined};
     const serializedText = ESSerializer.serialize(objToSerialize);
