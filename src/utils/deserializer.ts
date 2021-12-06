@@ -267,23 +267,45 @@ function deserializeClassProperty(classObj) {
     return deserializedObj;
   }
 
+  const parameters = Array.from(Array(classObj.length), () => ({})); // Use empty object as default parameter.
+
   if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
-    Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+    try {
+      deserializedObj = new classObj(...parameters);
+    } catch (e) {
+      warnIncorrectConstructorParameter(classObj.name);
+      deserializedObj = {};
+      Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+    }
   } else {// It's class in function style.
     deserializedObj = Object.create(classObj.prototype.constructor.prototype);
-    classObj.prototype.constructor.call(deserializedObj)
+    try {
+      classObj.prototype.constructor.call(deserializedObj, parameters)
+    } catch (e) {
+      warnIncorrectConstructorParameter(classObj.name);
+    }
   }
+
   return deserializedObj;
+}
+
+function warnIncorrectConstructorParameter(className) {
+  console.warn('Incorrect parameter type passed to constructor: ' + className);
 }
 
 function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping) {
   for (const k in parsedObj) {
-    if (k === CLASS_NAME_FIELD) {
+    if (k === CLASS_NAME_FIELD || isSetter(deserializedObj, k)) {
       continue;
     }
     deserializedObj[k] = deserializeFromParsedObjWithClassMapping(parsedObj[k], classMapping);
   }
   return deserializedObj;
+}
+
+function isSetter(obj, key) {
+  const descriptor = Object.getOwnPropertyDescriptor(obj, key);
+  return descriptor && typeof descriptor.set === 'function';
 }
 
 /**
