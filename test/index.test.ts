@@ -14,6 +14,7 @@ import ClassB from './env/ClassB';
 import ClassC from './env/ClassC';
 import MyObject from './env/MyObject';
 import Person from './env/Person';
+import User from './env/User';
 
 describe('Test serialize', () => {
   test('can serialize all fields of object', () => {
@@ -499,5 +500,18 @@ describe('Test clear operation', () => {
     expect(()=>{
       ESSerializer.deserialize(serializedText);
     }).toThrow('Class ClassB not found');
+  });
+});
+
+describe('Test getter/setter', () => {
+  test('can serialize and deserialize getter/setter defined in class constructor', () => {
+    const user = new User('P123456', 'Mike');
+    // @ts-ignore
+    user.location = 'Zhejiang_Ningbo';
+    const serializedString = ESSerializer.serialize(user);
+    const deserializedObj = ESSerializer.deserialize(serializedString, [User]);
+    expect(deserializedObj.location).toBe('Zhejiang : Ningbo');
+    expect(typeof Object.getOwnPropertyDescriptor(deserializedObj, 'location').get).toBe('function');
+    expect(typeof Object.getOwnPropertyDescriptor(deserializedObj, 'location').set).toBe('function');
   });
 });
