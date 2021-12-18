@@ -36,14 +36,14 @@ declare function clearRegisteredClasses();
  * @param target Object or primitive to serialize.
  * @param options Options during serialization, such as ignoreProperties and interceptProperties.
  */
-declare function serialize(target: any, options?: SerializeOptions): string;
+declare function serialize(target: any, options?:SerializeOptions): string;
 
 /**
  *
  * @param serializedText Text previously serialized.
  * @param classes [ExampleClassA, ExampleClassB, ...] An array of Class definition.
  */
-declare function deserialize(serializedText:string, classes:Array<any>): any;
+declare function deserialize(serializedText:string, classes?:Array<any>): any;
 
 export {
   interceptRequire,
