@@ -30,11 +30,11 @@ class ClassA extends SuperClassA {
   }
 
   methodOfClassA() {
-    console.log('ClassA');
+    console.log('Method of ClassA invoked');
   }
 
   static staticMethodOfClassA() {
-    console.log('Static of ClassA');
+    console.log('Static method of ClassA invoked');
   }
 }
 
