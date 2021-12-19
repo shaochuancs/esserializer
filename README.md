@@ -55,6 +55,34 @@ const obj = new ClassA();
 const serializedString = ESSerializer.serialize(obj);
 ```
 
+### Deserialization
+To deserialize text and turn it into a corresponding instance object, invoke ESSerializer's `deserialize` method,
+with all involved custom classes as parameter (you don't need to include builtin classes such as `Date` in this parameter):
+```js
+const ESSerializer = require('esserializer');
+const ClassA = require('./ClassA');
+const ClassB = require('./ClassB');
+const ClassC = require('./ClassC');
+
+const deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
+```
+
+## Demo
+Please check the [demo](https://github.com/shaochuancs/esserializer/tree/master/demo) page for all examples:
+* [basic.js](https://github.com/shaochuancs/esserializer/blob/master/demo/basic.js)
+* [support_of_OO_extension.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_OO_extension.js)
+* [support_of_array.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_array.js)
+* [support_of_builtin_types.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_builtin_types.js)
+* [support_of_date.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_date.js)
+* [support_of_function_style_class_definition.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_function_style_class_definition.js)
+* [support_of_intercept_require.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_intercept_require.js)
+* [support_of_properties_defined_in_constructor.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_properties_defined_in_constructor.js)
+* [support_of_register_classes.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_register_classes.js)
+* [support_of_serialize_options.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_serialize_options.js)
+
+## Advanced usage
+
+### Serialization
 You can also pass an options object during serialization and ignore unwanted properties, or intercept target properties:
 
 ```js
@@ -70,25 +98,13 @@ const serializedString = ESSerializer.serialize(obj, {
 
 Serialization options:
 
-| Option              | Type   | Description                                                                                                                                                                |
-|---------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ignoreProperties    | Array  | Array of string, represent all properties that would be ignored.                                                                                                           |
-| interceptProperties | Object | Object whose key represents property to be intercepted, and its Function value represents how to intercept. Properties' original value is passed to Function as parameter. |
-
+| Option              | Type   | Description                                                                                                                                                                            |
+|---------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ignoreProperties    | Array  | Array of string, represent all properties that would be ignored.                                                                                                                       |
+| interceptProperties | Object | Object whose key represents property to be intercepted, and its Function value represents how to intercept. The function would take properties' original value as its first parameter. |
 
 ### Deserialization
-To deserialize text and turn it into a corresponding instance object, invoke ESSerializer's `deserialize` method, 
-with all involved custom classes as parameter (you don't need to include builtin classes such as `Date` in this parameter):
-```js
-const ESSerializer = require('esserializer');
-const ClassA = require('./ClassA');
-const ClassB = require('./ClassB');
-const ClassC = require('./ClassC');
-
-const deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
-```
-
-Or, you can register some classes globally. Once class is registered, it will be remembered by ESSerializer in all files:
+You can also register some classes globally for deserialization. Once class is registered, it will be remembered by ESSerializer in all files:
 ```js
 ESSerializer.registerClasses([ClassA, ClassB, ClassC]);
 const deserializedObj = ESSerializer.deserialize(serializedString);
@@ -106,11 +122,8 @@ const deserializedObj = ESSerializer.deserialize(serializedString);
 
 Custom-Classes-Parameter / Class-Registry / Require-Interception, these 3 methods can be used in combination during deserialzation. 
 
-### Demo
-Please check the `/demo` directory in source code for all examples.
-
 ## ESSerializer Pro
-With a cup of coffee ($5), you can download ESSerializer Pro and get following additional features:
+With a cup of coffee ($5), you can download & update ESSerializer Pro and get following additional features:
 * Support circular structure
 * Support additional builtin object and type: 
   * Map
