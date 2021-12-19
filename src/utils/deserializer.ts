@@ -319,8 +319,13 @@ function getClassMappingFromClassArray(classes:Array<any> = []): object {
     if (!isClass(c)) {
       return;
     }
+    const className:string = c.name;
+    const previousClass = classMapping[className];
+    if (previousClass && previousClass !== c) {
+      console.warn('WARNING: Found class definition with the same name: ' + className);
+    }
     // @ts-ignore
-    classMapping[c.name] = c;
+    classMapping[className] = c;
   });
 
   return classMapping;

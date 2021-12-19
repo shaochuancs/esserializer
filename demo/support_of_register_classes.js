@@ -12,6 +12,8 @@ const SuperClassA = require('./env/SuperClassA');
 const ClassA = require('./env/ClassA');
 const SubClassA = require('./env/SubClassA');
 
+const AnotherClassA = require('./env/other/ClassA');
+
 ESSerializer.registerClasses([Person, SuperClassA, ClassA, SubClassA]);
 
 const p = new Person(88);
@@ -27,3 +29,5 @@ const serializedString = ESSerializer.serialize(subAObj);
 const deserializedObj = ESSerializer.deserialize(serializedString);
 console.log(deserializedObj);
 deserializedObj.methodOfSuperClassA();
+
+ESSerializer.deserialize(serializedString, [AnotherClassA]);
