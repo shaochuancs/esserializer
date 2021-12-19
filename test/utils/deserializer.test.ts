@@ -14,6 +14,7 @@ import {
 
 import SuperClassA from '../env/SuperClassA';
 import ClassA from '../env/ClassA';
+import AnotherClassA from '../env/other/ClassA';
 import ClassB from '../env/ClassB';
 import ClassC from '../env/ClassC';
 import Person from '../env/Person';
@@ -77,6 +78,18 @@ describe('Test getClassMappingFromClassArray', () => {
       ClassA: ClassA,
       ClassB: ClassB
     });
+  });
+
+  test('not display warning if duplicate class definition is passed', () => {
+    const warn = jest.spyOn(global.console, 'warn');
+    getClassMappingFromClassArray([ClassA, ClassB, ClassA]);
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  test('can display warning if class definition with the same name are passed', () => {
+    const warn = jest.spyOn(global.console, 'warn');
+    getClassMappingFromClassArray([ClassA, ClassB, AnotherClassA]);
+    expect(warn).toHaveBeenCalled();
   });
 });
 
