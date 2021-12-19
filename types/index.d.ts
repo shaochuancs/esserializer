@@ -10,6 +10,21 @@ import SerializeOptions from "./model/SerializeOptions";
 declare function interceptRequire();
 
 /**
+ * Disable require interception.
+ */
+declare function stopInterceptRequire();
+
+/**
+ * Return the status of require interception.
+ */
+declare function isInterceptingRequire():boolean;
+
+/**
+ * Get the intercepted required classes
+ */
+declare function getRequiredClasses():object;
+
+/**
  * Clear all required classes.
  */
 declare function clearRequiredClasses();
@@ -47,6 +62,9 @@ declare function deserialize(serializedText:string, classes?:Array<any>): any;
 
 export {
   interceptRequire,
+  stopInterceptRequire,
+  isInterceptingRequire,
+  getRequiredClasses,
   clearRequiredClasses,
   registerClass,
   registerClasses,
