@@ -17,10 +17,17 @@ if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
 
 class ESSerializer {
 
+  private static originRequire = null;
   private static isRequireIntercepted = false;
   private static requiredClasses:object = {};
 
   private static registeredClasses:Array<any> = [];
+
+  private static throwErrorIfInNonNodeEnvironment() {
+    if (!Module) {
+      throw new Error('Cannot intercept require in non-Node environment.');
+    }
+  }
 
   public static interceptRequire() {
     if (this.isRequireIntercepted) {
@@ -28,13 +35,10 @@ class ESSerializer {
     }
     this.isRequireIntercepted = true;
 
-    if (!Module) {
-      throw new Error('Cannot intercept require in non-Node environment.');
-    }
-
-    const originRequire = Module.prototype.require;
+    this.throwErrorIfInNonNodeEnvironment();
+    ESSerializer.originRequire = Module.prototype.require;
     Module.prototype.require = function () {
-      const requiredClass = originRequire.apply(this, arguments);
+      const requiredClass = ESSerializer.originRequire.apply(this, arguments);
       const requiredClassName = requiredClass.name;
       if (!ESSerializer.requiredClasses[requiredClassName]) {
         ESSerializer.requiredClasses[requiredClassName] = requiredClass;
@@ -42,6 +46,20 @@ class ESSerializer {
 
       return requiredClass;
     };
+  }
+
+  public static stopInterceptRequire() {
+    this.throwErrorIfInNonNodeEnvironment();
+    Module.prototype.require = ESSerializer.originRequire;
+    this.isRequireIntercepted = false;
+  }
+
+  public static isInterceptingRequire():boolean {
+    return this.isRequireIntercepted;
+  }
+
+  public static getRequiredClasses():object {
+    return this.requiredClasses;
   }
 
   public static clearRequiredClasses() {
