@@ -1,12 +1,11 @@
 /**
- * Created by cshao on 2021-08-29.
+ * Created by cshao on 2021-02-23.
+ * Node.js v15.0.0 is required to run all the demo program here.
  */
 
 'use strict';
 
 const ESSerializer = require('../dist/bundle');
-const Person = require('./env/Person');
-const MyObject = require('./env/MyObject');
 
 const arrayBuffer = new ArrayBuffer(8);
 const bufferView = new Int32Array(arrayBuffer);
@@ -56,44 +55,9 @@ const objToSerialize = {
   set: new Set([42, 55, 55, 'Hello', {a: 1, b: 2}, {a: 1, b: 2}]),
   i: Infinity,
   nan: NaN,
-  u: undefined,
-  unwantedField: 'This value should be removed during serialization'
+  u: undefined
 };
-const serializedText = ESSerializer.serialize(objToSerialize, {
-  ignoreProperties: ['unwantedField'],
-  interceptProperties: {
-    n: function (value) {
-      return value + this.a[0];
-    }
-  }
-});
+const serializedText = ESSerializer.serialize(objToSerialize);
 console.log(serializedText);
 const deserializedObj = ESSerializer.deserialize(serializedText);
 console.log(deserializedObj);
-
-// -------- support array as root --------
-
-const arr = [{a:88}, {b:42}];
-
-const s = ESSerializer.serialize(arr);
-console.log(s);
-
-const o = ESSerializer.deserialize(s);
-console.log(o);
-
-const arr2 = [new Person(88), new MyObject()];
-
-const s2 = ESSerializer.serialize(arr2);
-console.log(s2);
-
-const o2 = ESSerializer.deserialize(s2, [Person, MyObject]);
-console.log(o2);
-
-// -------- support Date as root --------
-
-const d = new Date();
-const serializedD = ESSerializer.serialize(d);
-console.log(serializedD);
-
-const deserializedD = ESSerializer.deserialize(serializedD);
-console.log(deserializedD);
