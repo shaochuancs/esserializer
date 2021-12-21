@@ -30,6 +30,11 @@ class User {
           this._location.province = locArr[0];
           this._location.city = locArr[1];
         }
+      },
+      displayName: {
+        enumerable: true,
+        configurable: false,
+        value: this.idNum + '_' + this.name
       }
     });
   }

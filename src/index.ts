@@ -5,6 +5,7 @@
 
 'use strict';
 
+import DeserializeOptions from "./model/DeserializationOptions";
 import SerializeOptions from "./model/SerializeOptions";
 
 import {getSerializeValueWithClassName} from './utils/serializer';
@@ -88,6 +89,7 @@ class ESSerializer {
 
   /**
    * @param target
+   * @param options Serialization options
    */
   public static serialize(target:any, options:SerializeOptions = {}): string {
     return JSON.stringify(getSerializeValueWithClassName(target, options));
@@ -97,9 +99,10 @@ class ESSerializer {
    * @param serializedText
    * @param classes [ExampleClassA, ExampleClassB, ...] It's an array of Class definition. "any" is used in code only
    * because there is no TypeScript type definition for Class.
+   * @param options Deserialization options
    */
-  public static deserialize(serializedText:string, classes:Array<any> = []): any {
-    return deserializeFromParsedObj(JSON.parse(serializedText), Object.values(this.requiredClasses).concat(this.registeredClasses).concat(classes));
+  public static deserialize(serializedText:string, classes:Array<any> = [], options:DeserializeOptions = {}): any {
+    return deserializeFromParsedObj(JSON.parse(serializedText), Object.values(this.requiredClasses).concat(this.registeredClasses).concat(classes), options);
   }
 }
 

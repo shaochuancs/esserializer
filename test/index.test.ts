@@ -503,7 +503,7 @@ describe('Test clear operation', () => {
   });
 });
 
-describe('Test getter/setter', () => {
+describe('Test special object properties', () => {
   test('can serialize and deserialize getter/setter defined in class constructor', () => {
     const user = new User('P123456', 'Mike');
     // @ts-ignore
@@ -513,6 +513,15 @@ describe('Test getter/setter', () => {
     expect(deserializedObj.location).toBe('Zhejiang : Ningbo');
     expect(typeof Object.getOwnPropertyDescriptor(deserializedObj, 'location').get).toBe('function');
     expect(typeof Object.getOwnPropertyDescriptor(deserializedObj, 'location').set).toBe('function');
+  });
+
+  test('can serialize and deserialize read only property defined in class constructor', () => {
+    const user = new User('P123456', 'Mike');
+    const serializedString = ESSerializer.serialize(user);
+    const deserializedObj = ESSerializer.deserialize(serializedString, [User], {
+      fieldsForConstructorParameters: ['idNum', 'name']
+    });
+    expect(deserializedObj.displayName).toBe('P123456_Mike');
   });
 });
 
