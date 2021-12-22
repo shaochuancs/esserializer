@@ -161,22 +161,22 @@ describe('Test deserializeFromParsedObjWithClassMapping', () => {
 
 describe('Test deserializeFromParsedObj', () => {
   test('will deserialize complex object successfully', () => {
-    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC]);
+    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC], {});
     expect(deserializedValueForComplexObject.toy.height).toBe(29);
   });
 
   test('will deserialize object with Date field value', () => {
-    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue);
+    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithDateFieldValue, [], {});
     expect(deserializedValueForObjWithDateFieldValue.date).toStrictEqual(new Date('2021-02-19T08:24:00Z'));
   });
 
   test('will deserialize object with invalid Date field as null', () => {
-    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithInvalidDateFieldValue);
+    const deserializedValueForObjWithDateFieldValue = deserializeFromParsedObj(parsedObjWithInvalidDateFieldValue, [], {});
     expect(deserializedValueForObjWithDateFieldValue.date).toBe(null);
   });
 
   test('support instanceof operator', () => {
-    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC]);
+    const deserializedValueForComplexObject = deserializeFromParsedObj(complexParsedObj, [SuperClassA, ClassA, ClassB, ClassC], {});
     expect(deserializedValueForComplexObject instanceof ClassB).toBe(true);
   });
 });
