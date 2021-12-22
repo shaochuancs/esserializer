@@ -5,8 +5,9 @@
 'use strict';
 
 class User {
-  constructor(id) {
+  constructor(id, name) {
     this.id = id;
+    this.name = name;
     this._location = {
       province: null,
       city: null
@@ -24,6 +25,11 @@ class User {
           this._location.province = locArr[0];
           this._location.city = locArr[1];
         }
+      },
+      displayName: {
+        enumerable: true,
+        configurable: false,
+        value: this.id + '_' + this.name
       }
     });
   }

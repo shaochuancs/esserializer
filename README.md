@@ -74,6 +74,7 @@ Please check the [demo](https://github.com/shaochuancs/esserializer/tree/master/
 * [support_of_array.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_array.js)
 * [support_of_builtin_types.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_builtin_types.js)
 * [support_of_date.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_date.js)
+* [support_of_deserialize_options.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_deserialize_options.js)
 * [support_of_function_style_class_definition.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_function_style_class_definition.js)
 * [support_of_intercept_require.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_intercept_require.js)
 * [support_of_properties_defined_in_constructor.js](https://github.com/shaochuancs/esserializer/blob/master/demo/support_of_properties_defined_in_constructor.js)
