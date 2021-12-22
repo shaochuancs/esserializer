@@ -98,10 +98,10 @@ const serializedString = ESSerializer.serialize(obj, {
 
 Serialization options:
 
-| Option              | Type           | Description                                                                                                                                                                            |
-|---------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ignoreProperties    | Array<string>  | All properties that would be ignored.                                                                                                                                                  |
-| interceptProperties | Object         | Object whose key represents property to be intercepted, and its Function value represents how to intercept. The function would take properties' original value as its first parameter. |
+| Option              | Type   | Description                                                                                                                                                                            |
+|---------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ignoreProperties    | Array  | Array of string, represent all properties that would be ignored.                                                                                                                       |
+| interceptProperties | Object | Object whose key represents property to be intercepted, and its Function value represents how to intercept. The function would take properties' original value as its first parameter. |
 
 ### Deserialization
 You can also register some classes globally for deserialization. Once class is registered, it will be remembered by ESSerializer in all files:
@@ -134,9 +134,9 @@ const deserializedObj = ESSerializer.deserialize(serializedString, [User], {
 
 Deserialization options:
 
-| Option                         | Type          | Description                                                                                                                                                                            |
-|--------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| fieldsForConstructorParameters | Array<string> | Fields of parsed object whose value would be used as constructor parameters                                                                                                            |
+| Option                         | Type  | Description                                                                                                                                                                            |
+|--------------------------------|-------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| fieldsForConstructorParameters | Array | Array of string, represent fields of parsed object whose value would be used as constructor parameters                                                                                 |
 
 ## ESSerializer Pro
 With a cup of coffee ($5), you can download & update ESSerializer Pro and get following additional features:
