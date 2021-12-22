@@ -56,13 +56,14 @@ import {
   ARRAY_FIELD,
   OPTIONS_FIELD
 } from './constant';
+import DeserializeOptions from "../model/DeserializationOptions";
 const REGEXP_BEGIN_WITH_CLASS = /^\s*class\s+/;
 
-function deserializeFromParsedObj(parsedObj:any, classes?:Array<any>): any {
-  return deserializeFromParsedObjWithClassMapping(parsedObj, getClassMappingFromClassArray(classes));
+function deserializeFromParsedObj(parsedObj:any, classes:Array<any>, options:DeserializeOptions): any {
+  return deserializeFromParsedObjWithClassMapping(parsedObj, getClassMappingFromClassArray(classes), options);
 }
 
-function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:object): any {
+function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:object, options:DeserializeOptions={}): any {
   if (notObject(parsedObj)) {
     return parsedObj;
   }
@@ -81,7 +82,17 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
     throw new Error(`Class ${classNameInParsedObj} not found`);
   }
 
-  const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj]);
+  let constructorParameters = [];
+  if (options.fieldsForConstructorParameters) {
+    constructorParameters = options.fieldsForConstructorParameters.map((field)=>{
+      if (field in parsedObj) {
+        return parsedObj[field];
+      }
+      return {}; // Prevent passing undefined to constructor
+    });
+  }
+
+  const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj], constructorParameters);
   return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
 }
 
@@ -260,18 +271,22 @@ function deserializeError(parsedObj, ErrorClass) {
   return error;
 }
 
-function deserializeClassProperty(classObj) {
+function deserializeClassProperty(classObj, constructorParameters:Array<any>) {
   let deserializedObj:object = {};
 
   if (!classObj) {
     return deserializedObj;
   }
 
-  const parameters = Array.from(Array(classObj.length), () => ({})); // Use empty object as default parameter.
+  const additionalParameterNumber = classObj.length - constructorParameters.length;
+  if (additionalParameterNumber > 0) {
+    // Use empty object as default parameter.
+    constructorParameters = constructorParameters.concat(Array.from(Array(additionalParameterNumber), () => ({})));
+  }
 
   if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
     try {
-      deserializedObj = new classObj(...parameters);
+      deserializedObj = new classObj(...constructorParameters);
     } catch (e) {
       warnIncorrectConstructorParameter(classObj.name);
       deserializedObj = {};
@@ -280,7 +295,7 @@ function deserializeClassProperty(classObj) {
   } else {// It's class in function style.
     deserializedObj = Object.create(classObj.prototype.constructor.prototype);
     try {
-      classObj.prototype.constructor.call(deserializedObj, parameters)
+      classObj.prototype.constructor.call(deserializedObj, constructorParameters)
     } catch (e) {
       warnIncorrectConstructorParameter(classObj.name);
     }
@@ -295,7 +310,7 @@ function warnIncorrectConstructorParameter(className) {
 
 function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping) {
   for (const k in parsedObj) {
-    if (k === CLASS_NAME_FIELD || isSetter(deserializedObj, k)) {
+    if (k === CLASS_NAME_FIELD || isReadonly(deserializedObj, k)) {
       continue;
     }
     deserializedObj[k] = deserializeFromParsedObjWithClassMapping(parsedObj[k], classMapping);
@@ -303,9 +318,12 @@ function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapp
   return deserializedObj;
 }
 
-function isSetter(obj, key) {
+function isReadonly(obj, key) {
   const descriptor = Object.getOwnPropertyDescriptor(obj, key);
-  return descriptor && typeof descriptor.set === 'function';
+  if (!descriptor) {
+    return false;
+  }
+  return descriptor.writable === false || typeof descriptor.set === 'function';
 }
 
 /**
