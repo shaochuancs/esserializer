@@ -88,7 +88,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
       if (field in parsedObj) {
         return parsedObj[field];
       }
-      return {};
+      return {}; // Prevent passing undefined to constructor
     });
   }
 
