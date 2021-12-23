@@ -313,10 +313,11 @@ function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapp
     const v = parsedObj[k];
 
     const descriptor = Object.getOwnPropertyDescriptor(deserializedObj, k);
-    if (canSkipAssigningValue(k, v, descriptor)) {
-      if (descriptor && descriptor.writable === false && typeof v === 'object') {
-        assignWritableField(deserializedObj[k], v, classMapping);
-      }
+    if (canSkipCopyingValue(k, v, descriptor)) {
+      continue;
+    }
+    if (descriptor && descriptor.writable === false && typeof v === 'object') {
+      assignWritableField(deserializedObj[k], v, classMapping);
       continue;
     }
 
@@ -325,13 +326,13 @@ function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapp
   return deserializedObj;
 }
 
-function canSkipAssigningValue(keyOfParsedObj, valueOfParsedObj, descriptorOfDeserializedObjProperty) {
+function canSkipCopyingValue(keyOfParsedObj, valueOfParsedObj, descriptorOfDeserializedObjProperty) {
   if (keyOfParsedObj === CLASS_NAME_FIELD) {
     return true;
   }
   return descriptorOfDeserializedObjProperty && (
     typeof descriptorOfDeserializedObjProperty.set === 'function' ||
-    descriptorOfDeserializedObjProperty.writable === false
+    (descriptorOfDeserializedObjProperty.writable === false && typeof valueOfParsedObj !== 'object')
   );
 }
 
