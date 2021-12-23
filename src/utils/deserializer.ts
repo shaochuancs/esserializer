@@ -310,20 +310,40 @@ function warnIncorrectConstructorParameter(className) {
 
 function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping) {
   for (const k in parsedObj) {
-    if (k === CLASS_NAME_FIELD || isReadonly(deserializedObj, k)) {
+    const v = parsedObj[k];
+
+    const descriptor = Object.getOwnPropertyDescriptor(deserializedObj, k);
+    if (canSkipCopyingValue(k, v, descriptor)) {
       continue;
     }
-    deserializedObj[k] = deserializeFromParsedObjWithClassMapping(parsedObj[k], classMapping);
+    if (descriptor && descriptor.writable === false && typeof v === 'object') {
+      assignWritableField(deserializedObj[k], v, classMapping);
+      continue;
+    }
+
+    deserializedObj[k] = deserializeFromParsedObjWithClassMapping(v, classMapping);
   }
   return deserializedObj;
 }
 
-function isReadonly(obj, key) {
-  const descriptor = Object.getOwnPropertyDescriptor(obj, key);
-  if (!descriptor) {
-    return false;
+function canSkipCopyingValue(keyOfParsedObj, valueOfParsedObj, descriptorOfDeserializedObjProperty) {
+  if (keyOfParsedObj === CLASS_NAME_FIELD) {
+    return true;
   }
-  return descriptor.writable === false || typeof descriptor.set === 'function';
+  return descriptorOfDeserializedObjProperty && (
+    typeof descriptorOfDeserializedObjProperty.set === 'function' ||
+    (descriptorOfDeserializedObjProperty.writable === false && typeof valueOfParsedObj !== 'object')
+  );
+}
+
+function assignWritableField(targetObj, sourceObj, classMapping) {
+  for (const field in sourceObj) {
+    const descriptor = Object.getOwnPropertyDescriptor(targetObj, field);
+    if (descriptor && !(descriptor.writable===true || typeof descriptor.set === 'function')) {
+      continue;
+    }
+    targetObj[field] = deserializeFromParsedObjWithClassMapping(sourceObj[field], classMapping);
+  }
 }
 
 /**

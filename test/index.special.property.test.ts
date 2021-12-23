@@ -27,6 +27,10 @@ describe('Test special object properties', () => {
       fieldsForConstructorParameters: ['idNum', 'name']
     });
     expect(deserializedObj.displayName).toBe('P123456_Mike');
+    expect(deserializedObj.displayObject).toStrictEqual({
+      identity: 'P123456',
+      nickname: 'Mike'
+    });
   });
 
   test('can deal with invalid field that is passed to class constructor', () => {

@@ -35,6 +35,14 @@ class User {
         enumerable: true,
         configurable: false,
         value: this.idNum + '_' + this.name
+      },
+      displayObject: {
+        enumerable: true,
+        configurable: false,
+        value: {
+          identity: this.idNum,
+          nickname: this.name
+        }
       }
     });
   }
