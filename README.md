@@ -33,7 +33,7 @@ ESSerializer support following features:
   * String
   * Symbol (with ESSerializer Pro)
   * undefined
-* Support ignoring target properties during serialization
+* Support ignoring target properties during serialization or deserialization
 * Support intercept target properties during serialization
 * Support circular structure (with ESSerializer Pro)
 
@@ -137,7 +137,9 @@ Deserialization options:
 
 | Option                         | Type  | Description                                                                                                                                                                            |
 |--------------------------------|-------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| fieldsForConstructorParameters | Array | Array of string, represent fields of parsed object whose value would be used as constructor parameters                                                                                 |
+| fieldsForConstructorParameters | Array | Array of string, represent fields of parsed object whose value would be used as constructor parameters.                                                                                |
+| ignoreProperties               | Array | Array of string, represent all properties that would be ignored.                                                                                                                       |
+| rawProperties                  | Array | Array of string, represent all properties whose raw text value would be retained in deserialization result.                                                                            |
 
 ## ESSerializer Pro
 With a cup of coffee ($5), you can download & update ESSerializer Pro and get following additional features:

@@ -5,7 +5,9 @@
 'use strict';
 
 interface DeserializeOptions {
-  fieldsForConstructorParameters?: Array<string>
+  fieldsForConstructorParameters?: Array<string>,
+  ignoreProperties?: Array<string>,
+  rawProperties?: Array<string>
 }
 
 export default DeserializeOptions;
