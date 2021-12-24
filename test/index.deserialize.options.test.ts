@@ -59,4 +59,20 @@ describe('Test special object properties', () => {
     });
     expect(deserializedObj.displayName).toBe('P123456_[object Object]');
   });
+
+  test('can retain raw property text value during deserialization', () => {
+    const text = '{"user":"Alice","data":{"row":1234,"column":21,"url":"https://example.com"}}';
+    const deserializedObj = ESSerializer.deserialize(text, [], {
+      rawProperties: ['data']
+    });
+    expect(deserializedObj.data).toBe('{"row":1234,"column":21,"url":"https://example.com"}');
+  });
+
+  test('can ignore properties during deserialization', () => {
+    const text = '{"user":"Alice","data":{"row":1234,"column":21,"url":"https://example.com"}}';
+    const deserializedObj = ESSerializer.deserialize(text, [], {
+      ignoreProperties: ['data']
+    });
+    expect(deserializedObj.data).toBeUndefined();
+  });
 });

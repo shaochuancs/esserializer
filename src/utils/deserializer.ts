@@ -93,7 +93,7 @@ function deserializeFromParsedObjWithClassMapping(parsedObj:any, classMapping:ob
   }
 
   const deserializedObj:object = deserializeClassProperty(classMapping[classNameInParsedObj], constructorParameters);
-  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping);
+  return deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping, options);
 }
 
 function _deserializeArray(parsedObj, classMapping:object) {
@@ -308,9 +308,17 @@ function warnIncorrectConstructorParameter(className) {
   console.warn('Incorrect parameter type passed to constructor: ' + className);
 }
 
-function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping) {
+function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping, options:DeserializeOptions) {
   for (const k in parsedObj) {
     const v = parsedObj[k];
+
+    if (options.ignoreProperties && options.ignoreProperties.includes(k)) {
+      continue;
+    }
+    if (options.rawProperties && options.rawProperties.includes(k)) {
+      deserializedObj[k] = JSON.stringify(v);
+      continue;
+    }
 
     const descriptor = Object.getOwnPropertyDescriptor(deserializedObj, k);
     if (canSkipCopyingValue(k, v, descriptor)) {
