@@ -153,4 +153,4 @@ Please contact shaochuancs@gmail.com if you are interested.
 ## License
 (The MIT License for ESSerializer and private license for ESSerializer Pro)
 
-Copyright (c) 2019-2021 Chuan Shao &lt;shaochuancs@gmail.com&gt;
+Copyright (c) 2019-2022 Chuan Shao &lt;shaochuancs@gmail.com&gt;
