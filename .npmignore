@@ -2,10 +2,8 @@
 node_modules/
 
 .circleci/
-demo/
 src/
 test/
-types/
 
 .idea/
 .coveralls.yml
