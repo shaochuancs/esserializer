@@ -71,7 +71,7 @@ const ClassC = require('./ClassC');
 const deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
 ```
 
-You can also make ESSerializer detecting those involved custom classes automatically, please check [Advanced usage](###Deserialization) for detail.
+You can also make ESSerializer detecting those involved custom classes automatically, please check [Advanced usage](#Deserialization) for detail.
 
 ## Demo
 Please check the [demo](https://github.com/shaochuancs/esserializer/tree/master/demo) page for all examples:
