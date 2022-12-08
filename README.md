@@ -8,6 +8,8 @@ ESSerializer is an ECMAScript serialization and deserialization utility.
 With ESSerializer, you can serialize JavaScript class instance in JSON format, and later on deserialize it into an instance object, with all Class/Property/Method etc. retained, recursively. 
 This works in both browser and Node.js environment. ESSerializer also support almost all builtin classes and types.
 
+No `eval` is used during serialization or deserialization. ESSerializer does not introduce any security risk.
+
 ## Features
 ESSerializer offers following features:
 * Retain class information of instance field value, recursively
@@ -34,6 +36,7 @@ ESSerializer offers following features:
   * String
   * Symbol (with ESSerializer Pro)
   * undefined
+* Support properties defined by `Object.defineProperty()` or `Object.defineProperties`.
 * Support ignoring target properties during serialization or deserialization
 * Support intercept target properties during serialization
 * Support circular structure (with ESSerializer Pro)
@@ -67,6 +70,8 @@ const ClassC = require('./ClassC');
 
 const deserializedObj = ESSerializer.deserialize(serializedString, [ClassA, ClassB, ClassC]);
 ```
+
+You can also make ESSerializer detecting those involved custom classes automatically, please check [Advanced usage](#Deserialization-1) for detail.
 
 ## Demo
 Please check the [demo](https://github.com/shaochuancs/esserializer/tree/master/demo) page for all examples:
