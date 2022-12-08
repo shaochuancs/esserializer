@@ -2,10 +2,12 @@
 node_modules/
 
 .circleci/
+.idea/
+
+coverage/
 src/
 test/
 
-.idea/
 .coveralls.yml
 .eslintignore
 .eslintrc.js
