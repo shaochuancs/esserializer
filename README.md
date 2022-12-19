@@ -3,7 +3,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/dc4d2ca88c7cc8467b81/maintainability)](https://codeclimate.com/github/shaochuancs/esserializer/maintainability)
 
 # esserializer
-ESSerializer is an ECMAScript serialization and deserialization utility.
+ESSerializer is an JavaScript serialization and deserialization utility.
 
 With ESSerializer, you can serialize JavaScript class instance in JSON format, and later on deserialize it into an instance object, with all Class/Property/Method etc. retained, recursively. 
 This works in both browser and Node.js environment. ESSerializer also support almost all builtin classes and types.

@@ -1,7 +1,7 @@
 {
   "name": "esserializer",
   "version": "1.3.8",
-  "description": "ECMAScript serialization and deserialization utility",
+  "description": "JavaScript serialization and deserialization utility",
   "main": "dist/bundle.js",
   "types": "types/index.d.ts",
   "scripts": {
