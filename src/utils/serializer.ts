@@ -54,17 +54,21 @@ function getSerializeValueWithClassName(target:any, options:SerializeOptions = {
       }
     }
 
-    for (const k in target) {
-      const v = target[k];
-      if (typeof v === 'function') {
-        continue;
-      }
-      // @ts-ignore
-      serializedObj[k] = getSerializeValueWithClassName(target[k]);
-    }
+    copySerializedProperties(target, serializedObj);
   }
 
   return appendClassInfoAndAssignDataForBuiltinType(target, serializedObj);
+}
+
+function copySerializedProperties(source, dest) {
+  for (const k in source) {
+    const v = source[k];
+    if (typeof v === 'function') {
+      continue;
+    }
+    // @ts-ignore
+    dest[k] = getSerializeValueWithClassName(source[k]);
+  }
 }
 
 function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) {
