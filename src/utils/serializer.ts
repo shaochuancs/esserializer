@@ -55,6 +55,10 @@ function getSerializeValueWithClassName(target:any, options:SerializeOptions = {
     }
 
     for (const k in target) {
+      const v = target[k];
+      if (typeof v === 'function') {
+        continue;
+      }
       // @ts-ignore
       serializedObj[k] = getSerializeValueWithClassName(target[k]);
     }
