@@ -72,7 +72,10 @@ function copySerializedProperties(source, dest) {
 }
 
 function appendClassInfoAndAssignDataForBuiltinType(target: any, serializedObj) {
-  const className:string = target.__proto__.constructor.name;
+  let className:string = target.__proto__.constructor.name;
+  if (className === 'Object') {
+    className = target.constructor.name; // In case object's constructor is not in its prototype, such as Big in big.js
+  }
   if (className !== 'Object') {
     // @ts-ignore
     serializedObj[CLASS_NAME_FIELD] = className;
