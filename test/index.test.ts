@@ -5,6 +5,7 @@
 
 'use strict';
 
+const Big = require('big.js');
 const BigNumber = require('bignumber.js');
 
 import SuperClassA from './env/SuperClassA';
@@ -510,5 +511,12 @@ describe('Test complex class of other libraries', () => {
     const serializedText = ESSerializer.serialize(bn);
     const deserializedBN = ESSerializer.deserialize(serializedText, [BigNumber]);
     expect(deserializedBN.toNumber()).toBe(42);
+  });
+
+  test('can serialize and deserialize Big', () => {
+    const b = new Big(42);
+    const serializedText = ESSerializer.serialize(b);
+    const deserializedB = ESSerializer.deserialize(serializedText, [Big]);
+    expect(deserializedB.toNumber()).toBe(42);
   });
 });

@@ -272,40 +272,51 @@ function deserializeError(parsedObj, ErrorClass) {
 }
 
 function deserializeClassProperty(classObj, constructorParameters:Array<any>) {
-  let deserializedObj:object = {};
-
   if (!classObj) {
-    return deserializedObj;
+    return {};
   }
 
-  const additionalParameterNumber = classObj.length - constructorParameters.length;
-  if (additionalParameterNumber > 0) {
-    // Use empty object as default parameter.
-    constructorParameters = constructorParameters.concat(Array.from(Array(additionalParameterNumber), () => ({})));
-  }
+  const additionalParameterNumber = Math.max(classObj.length - constructorParameters.length, 0);
+  const FALLBACK_PARAMETERS = [{}, 0, '', null];
+  let fallbackParam = FALLBACK_PARAMETERS.shift();
+  let deserializedObj;
+  while (!deserializedObj && fallbackParam !== undefined) {
+    deserializedObj = createDeserializedObj(
+      classObj,
+      constructorParameters.concat(Array.from(Array(additionalParameterNumber), () => (fallbackParam)))
+    );
 
-  if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
-    try {
-      deserializedObj = new classObj(...constructorParameters);
-    } catch (e) {
-      warnIncorrectConstructorParameter(classObj.name);
-      deserializedObj = {};
-      Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
+    if (additionalParameterNumber === 0) {
+      fallbackParam = undefined;
+    } else {
+      fallbackParam = FALLBACK_PARAMETERS.shift();
     }
-  } else {// It's class in function style.
-    deserializedObj = Object.create(classObj.prototype.constructor.prototype);
-    try {
-      classObj.prototype.constructor.call(deserializedObj, constructorParameters)
-    } catch (e) {
-      warnIncorrectConstructorParameter(classObj.name);
-    }
+  }
+  if (!deserializedObj) {
+    deserializedObj = {};
+    Object.setPrototypeOf(deserializedObj, classObj ? classObj.prototype : Object.prototype);
   }
 
   return deserializedObj;
 }
 
-function warnIncorrectConstructorParameter(className) {
-  console.warn('Incorrect parameter type passed to constructor: ' + className);
+function createDeserializedObj(classObj, allConstructorParameters) {
+  let deserializedObj;
+  try {
+    if (REGEXP_BEGIN_WITH_CLASS.test(classObj.toString())) {
+      deserializedObj = new classObj(...allConstructorParameters);
+    } else {// It's class in function style.
+      let objectConstructor = classObj.prototype.constructor;
+      if (objectConstructor.name === 'Object') {
+        objectConstructor = classObj; // In case object's constructor is not in its prototype, such as Big in big.js
+      }
+      deserializedObj = Object.create(objectConstructor.prototype);
+      objectConstructor.call(deserializedObj, allConstructorParameters)
+    }
+  } catch (e) {
+    deserializedObj = null;
+  }
+  return deserializedObj;
 }
 
 function deserializeValuesWithClassMapping(deserializedObj, parsedObj, classMapping, options:DeserializeOptions) {
