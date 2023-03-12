@@ -52,13 +52,12 @@ $ npm install esserializer --save
 
 For ES6:
 
-```
-import ESSerializer from "esserializer";
+```js
+import ESSerializer from 'esserializer';
 ```
 
 Or for CommonJS:
-
-```
+```js
 const ESSerializer = require('esserializer');
 ```
 
