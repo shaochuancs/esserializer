@@ -48,10 +48,23 @@ $ npm install esserializer --save
 
 ## Usage
 
-### Serialization
-To serialize JavaScript object, invoke ESSerializer's `serialize` method:
+### Import the module
+
+For ES6:
+
+```js
+import ESSerializer from 'esserializer';
+```
+
+Or for CommonJS:
 ```js
 const ESSerializer = require('esserializer');
+```
+
+### Serialization
+To serialize JavaScript object, invoke ESSerializer's `serialize` method:
+
+```js
 const ClassA = require('./ClassA');
 
 const obj = new ClassA();
